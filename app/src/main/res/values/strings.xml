@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">ETA</string>
+    <string name="action_settings">Settings</string>
+    <string name="name">Enter a name</string>
+    <string name="start">Enter the start location</string>
+    <string name="destination">Enter the destination</string>
+    <string name="friends">Enter friends</string>
+    <string name="start_time">Enter the start time</string>
+    <string name="time">Enter join time</string>
+    <string name="create">Let us start</string>
+    <string name="view">Check the Trip</string>
+    <string name="title_activity_view_trip">ViewTrip</string>
+    <string name="done">Done</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="title_activity_create_trip">createTrip</string>
+</resources>
