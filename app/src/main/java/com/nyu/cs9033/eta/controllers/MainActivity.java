@@ -1,6 +1,7 @@
 package com.nyu.cs9033.eta.controllers;
 
 
+import com.nyu.cs9033.eta.models.Person;
 import com.nyu.cs9033.eta.models.Trip;
 import com.nyu.cs9033.eta.R;
 
@@ -19,12 +20,15 @@ public class MainActivity extends Activity {
 
 	private static final String TAG = "MainActivity";
     protected final static String EXTRA_MESSAGE = "com.nyu.cs9033.eta.MESSAGE";
+    static final int REQUEST_DATA = 1;
     private TextView textView;
+    private Person person;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
         Log.v(TAG,"index"+1);
+
         // viewTrip.setOnClickListener(this);
 		// TODO - fill in here
 	}
@@ -34,9 +38,9 @@ public class MainActivity extends Activity {
 	 * Activity responsible for creating
 	 * a Trip.
 	 */
-	public void startCreateTripActivity(View view) {
+	public void startCreateTripActivity() {
             Intent intent = new Intent(this, CreateTripActivity.class);
-            startActivityForResult(intent,1);
+            startActivityForResult(intent,REQUEST_DATA);
         }
 		// TODO - fill in here
 	
@@ -45,10 +49,12 @@ public class MainActivity extends Activity {
 	 * Activity responsible for viewing
 	 * a Trip.
 	 */
-	public void startViewTripActivity(View view) {
-            Intent intent = new Intent(this, ViewTripActivity.class);
+	public void startViewTripActivity() {
+
+//            Intent intent = new Intent(this, ViewTripActivity.class);
+            Trip trip =
             startActivity(intent);
-            }
+    }
             // TODO - fill in here
 	
 	/**
@@ -68,11 +74,22 @@ public class MainActivity extends Activity {
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		// TODO - fill in here
-        if(resultCode != Activity.RESULT_OK) return;
-        Uri contactUri = data.getData();
-        String[] queryFields = new String[] {
-                ContactsContract.Contacts.DISPLAY_NAME
-        };
-        //Cursor c = getContentResolver().query(contactUri,queryFields,null,null,null);
+        if(resultCode == REQUEST_DATA) {
+            if (resultCode == RESULT_OK) {
+                Uri uri = data.getData();
+                String[] queryFields = new String[]{
+                        ContactsContract.Contacts.DISPLAY_NAME
+                };
+                Cursor cursor = getContentResolver().query(uri, queryFields, null, null, null);
+                if (cursor.getCount() == 0) {
+                    cursor.close();
+                    return;
+                }
+                cursor.moveToFirst();
+                String name = cursor.getString(0);
+                person.setName(name);
+                startViewTripActivity();
+            }
+        }
 	}
 }

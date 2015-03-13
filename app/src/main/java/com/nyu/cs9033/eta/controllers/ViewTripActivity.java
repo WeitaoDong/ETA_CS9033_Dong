@@ -28,10 +28,11 @@ public class ViewTripActivity extends Activity {
         setContentView(R.layout.activity_view_trip);
         setTitle("View Trip");
         destination = (TextView) findViewById(R.id.destination);
-        Log.v(destination.toString(),"222");
         time = (TextView) findViewById(R.id.time);
         friends = (TextView) findViewById(R.id.friends);
+        Log.v("222222","222");
         Trip trip = getTrip(getIntent());
+        Log.v("333333","222");
         viewTrip(trip);
 	}
 	
@@ -48,15 +49,18 @@ public class ViewTripActivity extends Activity {
 	 */
 	public Trip getTrip(Intent i) {
         ArrayList<Trip> trips = i.getExtras().getParcelableArrayList("parcel");
-        Trip trip = trips.get(0);
-
+        if(trips!=null) {
+            Trip trip = trips.get(0);
+            return trip;
+        }
+        return null;
 //        i = getIntent();
 //        String message = i.getStringExtra(MainActivity.EXTRA_MESSAGE);
 //        TextView textView = new TextView(this);
 //        textView.setText(message);
 		// TODO - fill in here
 
-		return trip;
+
 	}
 
 	/**

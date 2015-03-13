@@ -76,5 +76,5 @@
         android:layout_height="wrap_content"
         android:id="@+id/done"
         android:text="@string/done"
-        android:onClick=""/>
+        android:onClick="MainActivity.class"/>
 </LinearLayout>
