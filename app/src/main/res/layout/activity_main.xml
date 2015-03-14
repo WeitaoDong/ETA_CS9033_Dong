@@ -14,13 +14,11 @@
         android:layout_height="wrap_content"
         android:id="@+id/view"
         android:text="View"
-        android:onClick="startViewTripActivity"
         android:layout_gravity="center_horizontal" />
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/create"
         android:text="Create"
-        android:onClick="startCreateTripActivity"
         android:layout_gravity="center_horizontal"/>
 </LinearLayout>

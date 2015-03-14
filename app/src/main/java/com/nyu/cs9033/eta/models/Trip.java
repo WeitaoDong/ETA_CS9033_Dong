@@ -17,12 +17,10 @@ public class Trip implements Parcelable {
 	
 	// Member fields should exist here, what else do you need for a trip?
 	// Please add additional fields
-    private UUID mId;
 	private String name;
-    private List<Person> friends;
-    private String start;
+    private String friends;
     private String destination;
-    private Date time;
+    private String time;
     private static final String JSON_ID = "id";
     private static final String JSON_DESTINATION = "destination";
     private static final String JSON_PEOPLE = "friends";
@@ -33,22 +31,18 @@ public class Trip implements Parcelable {
         return name;
     }
     public void setName(String name){this.name = name;}
-    public String getStart(){
-        return start;
-    }
-    public void setStart(String start){this.start = start;}
-    public List<Person> getFriends(){
+    public String getFriends(){
         return friends;
     }
-    public void setFriends(ArrayList<Person> friends){this.friends = friends;}
+    public void setFriends(String friends){this.friends = friends;}
     public String getDestination(){
         return destination;
     }
     public void setDestination(String destination){this.destination = destination;}
-    public Date getTime(){
+    public String getTime(){
         return time;
     }
-    public void setTime(Date time){this.time = time;}
+    public void setTime(String time){this.time = time;}
 	/**
 	 * Parcelable creator. Do not modify this function.
 	 */
@@ -71,11 +65,9 @@ public class Trip implements Parcelable {
 	 */
 	public Trip(Parcel p) {
         name = p.readString();
-        friends = new ArrayList<Person>();
-        p.readList(friends, null);
-        start = p.readString();
+        friends = p.readString();
         destination = p.readString();
-        time = (Date) p.readSerializable();
+        time = p.readString();
 		// TODO - fill in here
 	}
 	
@@ -87,10 +79,9 @@ public class Trip implements Parcelable {
 	 */
 
 
-	public Trip(String name,List<Person> friends,String start, String destination,String start_time,Date time) {
+	public Trip(String name,String friends, String destination,String time) {
         this.name = name;
         this.friends = friends;
-        this.start = start;
         this.destination = destination;
         this.time = time;
 		// TODO - fill in here, please note you must have more arguments here
@@ -111,11 +102,10 @@ public class Trip implements Parcelable {
 	 */
 	@Override
 	public void writeToParcel(Parcel dest, int flags) {
-		dest.writeStringArray(new String[]{this.name,
-                this.start,
-                this.destination,});
-        dest.writeList(this.friends);
-        dest.writeSerializable(this.time);
+		dest.writeString(this.name);
+        dest.writeString(this.friends);
+        dest.writeString(this.destination);
+        dest.writeString(this.time);
 		// TODO - fill in here 
 	}
 	
@@ -123,21 +113,20 @@ public class Trip implements Parcelable {
 	 * Feel free to add additional functions as necessary below.
 	 */
 
-    public JSONObject toJSON() throws JSONException {
-        JSONObject json = new JSONObject();
-        json.put(JSON_ID,mId.toString());
-        json.put(JSON_DESTINATION,destination);
-        json.put(JSON_PEOPLE,new JSONArray(friends));
-        json.put(JSON_DATE,time.getTime());
-        return json;
-    }
+//    public JSONObject toJSON() throws JSONException {
+//        JSONObject json = new JSONObject();
+//        json.put(JSON_ID,mId.toString());
+//        json.put(JSON_DESTINATION,destination);
+//        json.put(JSON_PEOPLE,new JSONArray(friends));
+//        json.put(JSON_DATE,time.getTime());
+//        return json;
+//    }
 
 	public Trip(){
-        friends = new ArrayList<Person>();
         name = null;
-        start = null;
+        friends = null;
         destination = null;
-        time = new Date();
+        time = null;
     }
 	/**
 	 * Do not implement

@@ -20,20 +20,20 @@ import java.util.Iterator;
 public class ViewTripActivity extends Activity {
 
 	private static final String TAG = "ViewTripActivity";
-	private TextView destination;
-    private TextView time;
-    private TextView friends;
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_view_trip);
-        setTitle("View Trip");
-        destination = (TextView) findViewById(R.id.destination);
-        time = (TextView) findViewById(R.id.time);
-        friends = (TextView) findViewById(R.id.friends);
-        Log.v(getIntent().toString(),"222");
         Trip trip = getTrip(getIntent());
+        setTitle("View Trip");
+
+//        destination = (TextView) findViewById(R.id.destination);
+//        time = (TextView) findViewById(R.id.time);
+//        friends = (TextView) findViewById(R.id.friends);
+//        Log.v(getIntent().toString(),"222");
+//        Trip trip = getTrip(getIntent());
+        setContentView(R.layout.activity_view_trip);
         viewTrip(trip);
+
 	}
 	
 	/**
@@ -48,17 +48,12 @@ public class ViewTripActivity extends Activity {
 	 * is none.
 	 */
 	public Trip getTrip(Intent i) {
-        try {
-            ArrayList<Trip> trips = i.getExtras().getParcelableArrayList("name");
-            if (trips != null) {
-                Trip trip = trips.get(0);
-                return trip;
-            }
-        } catch (Exception e){
-            Log.v(e.toString(),"null");
-        }
-        return null;
-	}
+        Trip trip = i.getParcelableExtra("create trip");
+        if (trip != null) {
+            return trip;
+        } else return null;
+    }
+
 
 	/**
 	 * Populate the View using a Trip model.
@@ -68,19 +63,24 @@ public class ViewTripActivity extends Activity {
 	 */
 	public void viewTrip(Trip trip) {
         if(trip!=null) {
-            destination.setText(trip.getDestination());
-            time.setText(trip.getTime().toString());
-            Iterator<Person> itr = trip.getFriends().iterator();
-            while (itr.hasNext()) {
-                friends.append(itr.next().getName());
-            }
+            TextView name1 = (TextView) findViewById(R.id.name);
+            name1.setText(trip.getName());
+            TextView friends1 = (TextView) findViewById(R.id.destination);
+            friends1.setText(trip.getFriends());
+            TextView destination1 = (TextView) findViewById(R.id.friends);
+            destination1.setText(trip.getDestination());
+            TextView time1 = (TextView) findViewById(R.id.time);
+            time1.setText(trip.getTime());
+
+//            while (itr.hasNext()) {
+//                friends.append(itr.next().getName());
+//            }
         } else {
             new AlertDialog.Builder(this)
                             .setIcon(R.drawable.ic_action_error)
                             .setTitle("Alert")
-                            .setMessage("No trip found, please setup your own trip!")
+                            .setMessage("No trip found, please create trip!")
                             .setPositiveButton("Confirm",null).show();
-            return;
         }
 
 		// TODO - fill in here

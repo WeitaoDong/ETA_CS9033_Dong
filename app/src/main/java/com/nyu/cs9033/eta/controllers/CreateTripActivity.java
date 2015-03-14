@@ -10,6 +10,8 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -21,22 +23,32 @@ import java.util.Iterator;
 public class CreateTripActivity extends Activity {
 	
 	private static final String TAG = "CreateTripActivity";
-	private TextView destination;
-    private TextView friends;
-    private TextView tripTime;
+	private EditText destination;
+    private EditText friends;
+    private EditText tripTime;
     private Date date;
-    private TextView real_name;
+    private EditText real_name;
     ArrayList<String> AllName = new ArrayList<String>();
+    Trip trip;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-        real_name = (TextView)findViewById(R.id.name);
-        friends = (TextView)findViewById(R.id.friends);
-        destination = (TextView)findViewById(R.id.destination);
-        tripTime = (TextView)findViewById(R.id.time);
         setContentView(R.layout.activity_create_trip);
         setTitle("Create trip");
+        Button CreateTrip = (Button) findViewById(R.id.done);
+        Button CancelTrip = (Button) findViewById(R.id.cancel);
+        CreateTrip.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View view){
+                Trip trip = createTrip();
+                saveTrip(trip);
+            }
+        });
+        CancelTrip.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View view){
+                cancelTrip();
+            }
+        });
 
 		// TODO - fill in here
 	}
@@ -49,20 +61,23 @@ public class CreateTripActivity extends Activity {
 	 * by the View.
 	 */
 	public Trip createTrip() {
-        String trip_friends = friends.getText().toString().trim();
-        String trip_date = tripTime.getText().toString().trim();
+        real_name = (EditText)findViewById(R.id.name);
+        String trip_name = real_name.getText().toString().trim();
+        friends = (EditText)findViewById(R.id.friends);
+        String friend = friends.getText().toString().trim();
+        destination = (EditText)findViewById(R.id.destination);
         String trip_destination = destination.getText().toString().trim();
-        Trip trip = new Trip();
-        if (TextUtils.isEmpty(trip_friends) || TextUtils.isEmpty(trip_date) || TextUtils.isEmpty(trip_date) ) {
+        tripTime = (EditText)findViewById(R.id.time);
+        String trip_date = tripTime.getText().toString().trim();
+        if (TextUtils.isEmpty(trip_name)|| TextUtils.isEmpty(friend) || TextUtils.isEmpty(trip_date) || TextUtils.isEmpty(trip_date) ) {
             Toast.makeText(this, "All fields must be filled.", Toast.LENGTH_LONG).show();
+            return null;
         } else {
-            ArrayList<Person> persons = new ArrayList<Person>();
-            trip.setName(trip_friends);
-            trip.setDestination(trip_destination);
-            trip.setTime(date);
+            Trip trip = new Trip(trip_name,friend,trip_destination,trip_date);
+
             return trip;
         }
-        return trip;
+//        return trip;
     }
 
 	/**
@@ -78,10 +93,12 @@ public class CreateTripActivity extends Activity {
 	 * saved.
 	 */
 	public boolean saveTrip(Trip trip) {
-        Iterator<Person> iterator = trip.getFriends().iterator();
+        createTrip();
         Intent intent = new Intent(CreateTripActivity.this,MainActivity.class);
-        setResult(RESULT_OK,intent);
-        intent.putExtra("name",createTrip());
+//        intent.putExtra("",createTrip(findViewById(R.id.done)));
+        intent.putExtra("create trip",trip);
+        setResult(RESULT_OK, intent);
+        finish();
         return true;
 		// TODO - fill in here
 	}
@@ -102,6 +119,7 @@ public class CreateTripActivity extends Activity {
 	 * using finish() and setResult().
 	 */
 	public void cancelTrip() {
+        Intent intent = new Intent(this,MainActivity.class);
 	    setResult(RESULT_CANCELED);
         finish();
 		// TODO - fill in here

@@ -13,6 +13,6 @@
     <string name="view">Check the Trip</string>
     <string name="title_activity_view_trip">ViewTrip</string>
     <string name="done">Done</string>
-    <string name="hello_world">Hello world!</string>
+    <string name="cancel">Cancel the Trip!</string>
     <string name="title_activity_create_trip">createTrip</string>
 </resources>
