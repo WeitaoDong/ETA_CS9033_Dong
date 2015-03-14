@@ -2,6 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/background"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
@@ -12,13 +13,22 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="name"/>
-    <EditText
-        android:id = "@+id/name"
-        android:layout_weight="1"
+        android:textSize="25sp"
+        android:layout_margin="5dp"
+        android:text="Let's start your trip!"
+        android:layout_gravity="center_horizontal"/>
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:hint="@string/name"/>
+        android:text="name"
+        android:textSize="20sp"/>
+    <EditText
+        android:id = "@+id/name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/name"
+        android:ems="10"
+        android:textSize="20sp"/>
     <!--<TextView-->
         <!--android:layout_width="wrap_content"-->
         <!--android:layout_height="wrap_content"-->
@@ -31,26 +41,29 @@
         <!--android:hint="@string/start"-->
         <!--android:ellipsize="end"-->
         <!--android:singleLine="true"/>-->
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="destination"/>
+        android:text="destination"
+        android:textSize="20sp"/>
     <EditText
         android:id = "@+id/destination"
-        android:layout_weight="1"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/destination"/>
+        android:hint="@string/destination"
+        android:textSize="20sp"/>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="friends"/>
+        android:text="friends"
+        android:textSize="20sp"/>
     <EditText
         android:id = "@+id/friends"
-        android:layout_weight="1"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/friends"/>
+        android:hint="@string/friends"
+        android:textSize="20sp"/>
     <!--<TextView-->
         <!--android:layout_width="wrap_content"-->
         <!--android:layout_height="wrap_content"-->
@@ -64,21 +77,28 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="time"/>
+        android:text="time"
+        android:textSize="20sp"/>
     <EditText
         android:id = "@+id/time"
-        android:layout_weight="1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/time"/>
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/done"
-        android:text="@string/done"/>
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/cancel"
-        android:text="@string/cancel"/>
+        android:hint="@string/time"
+        android:textSize="20sp"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:id="@+id/create"
+            android:text="Start"/>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:id="@+id/cancel"
+            android:text="Cancel"/>
+    </LinearLayout>
 </LinearLayout>

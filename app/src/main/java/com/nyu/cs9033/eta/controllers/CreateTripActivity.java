@@ -23,11 +23,11 @@ import java.util.Iterator;
 public class CreateTripActivity extends Activity {
 	
 	private static final String TAG = "CreateTripActivity";
-	private EditText destination;
-    private EditText friends;
-    private EditText tripTime;
+	private EditText trip_destination;
+    private EditText trip_friend;
+    private EditText trip_time;
     private Date date;
-    private EditText real_name;
+    private EditText trip_name;
     ArrayList<String> AllName = new ArrayList<String>();
     Trip trip;
 
@@ -36,7 +36,7 @@ public class CreateTripActivity extends Activity {
 		super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_trip);
         setTitle("Create trip");
-        Button CreateTrip = (Button) findViewById(R.id.done);
+        Button CreateTrip = (Button) findViewById(R.id.create);
         Button CancelTrip = (Button) findViewById(R.id.cancel);
         CreateTrip.setOnClickListener(new View.OnClickListener(){
             public void onClick(View view){
@@ -61,19 +61,19 @@ public class CreateTripActivity extends Activity {
 	 * by the View.
 	 */
 	public Trip createTrip() {
-        real_name = (EditText)findViewById(R.id.name);
-        String trip_name = real_name.getText().toString().trim();
-        friends = (EditText)findViewById(R.id.friends);
-        String friend = friends.getText().toString().trim();
-        destination = (EditText)findViewById(R.id.destination);
-        String trip_destination = destination.getText().toString().trim();
-        tripTime = (EditText)findViewById(R.id.time);
-        String trip_date = tripTime.getText().toString().trim();
-        if (TextUtils.isEmpty(trip_name)|| TextUtils.isEmpty(friend) || TextUtils.isEmpty(trip_date) || TextUtils.isEmpty(trip_date) ) {
+        trip_name = (EditText)findViewById(R.id.name);
+        String Vtrip_name = trip_name.getText().toString().trim();
+        trip_friend = (EditText)findViewById(R.id.friends);
+        String Vfriend = trip_friend.getText().toString().trim();
+        trip_destination = (EditText)findViewById(R.id.destination);
+        String Vtrip_destination = trip_destination.getText().toString().trim();
+        trip_time = (EditText)findViewById(R.id.time);
+        String Vtrip_date = trip_time.getText().toString().trim();
+        if (TextUtils.isEmpty(Vtrip_name)|| TextUtils.isEmpty(Vfriend) || TextUtils.isEmpty(Vtrip_destination) || TextUtils.isEmpty(Vtrip_date) ) {
             Toast.makeText(this, "All fields must be filled.", Toast.LENGTH_LONG).show();
             return null;
         } else {
-            Trip trip = new Trip(trip_name,friend,trip_destination,trip_date);
+            Trip trip = new Trip(Vtrip_name,Vfriend,Vtrip_destination,Vtrip_date);
 
             return trip;
         }
@@ -95,9 +95,8 @@ public class CreateTripActivity extends Activity {
 	public boolean saveTrip(Trip trip) {
         createTrip();
         Intent intent = new Intent(CreateTripActivity.this,MainActivity.class);
-//        intent.putExtra("",createTrip(findViewById(R.id.done)));
         intent.putExtra("create trip",trip);
-        setResult(RESULT_OK, intent);
+        setResult(1, intent);
         finish();
         return true;
 		// TODO - fill in here

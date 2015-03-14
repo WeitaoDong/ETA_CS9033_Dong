@@ -10,6 +10,7 @@
     <string name="start_time">Enter the start time</string>
     <string name="time">Enter join time</string>
     <string name="create">Let us start</string>
+    <string name="create_trip">Create the trip</string>
     <string name="view">Check the Trip</string>
     <string name="title_activity_view_trip">ViewTrip</string>
     <string name="done">Done</string>

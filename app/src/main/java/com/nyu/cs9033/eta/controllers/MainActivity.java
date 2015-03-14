@@ -35,7 +35,7 @@ public class MainActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
         Log.v(TAG,"index"+1);
-        Button create_trip = (Button) findViewById(R.id.create);
+        Button create_trip = (Button) findViewById(R.id.create_trip);
         Button view_trip = (Button) findViewById(R.id.view);
         create_trip.setOnClickListener(new View.OnClickListener(){
             public void onClick(View view){
@@ -91,9 +91,9 @@ public class MainActivity extends Activity {
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		// TODO - fill in here
-        if(resultCode == REQUEST_DATA) {
-            trip = data.getParcelableExtra("create trip");
-        }
+            if(resultCode==1) {
+                trip = data.getParcelableExtra("create trip");
+            }
 //        if(resultCode == REQUEST_DATA) {
 //            if (resultCode == RESULT_OK) {
 //                Uri uri = data.getData();
