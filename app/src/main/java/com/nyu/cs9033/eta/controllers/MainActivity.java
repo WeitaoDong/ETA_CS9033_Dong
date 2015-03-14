@@ -10,11 +10,15 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
+import android.os.Parcel;
 import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
+
+import java.util.ArrayList;
+import java.util.Date;
 
 public class MainActivity extends Activity {
 
@@ -23,6 +27,8 @@ public class MainActivity extends Activity {
     static final int REQUEST_DATA = 1;
     private TextView textView;
     private Person person;
+    private Trip trip;
+    private ArrayList<Trip> context;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -38,7 +44,7 @@ public class MainActivity extends Activity {
 	 * Activity responsible for creating
 	 * a Trip.
 	 */
-	public void startCreateTripActivity() {
+	public void startCreateTripActivity(View view) {
             Intent intent = new Intent(this, CreateTripActivity.class);
             startActivityForResult(intent,REQUEST_DATA);
         }
@@ -49,10 +55,8 @@ public class MainActivity extends Activity {
 	 * Activity responsible for viewing
 	 * a Trip.
 	 */
-	public void startViewTripActivity() {
-
-//            Intent intent = new Intent(this, ViewTripActivity.class);
-            Trip trip =
+	public void startViewTripActivity(View view) {
+            Intent intent = new Intent(this, ViewTripActivity.class);
             startActivity(intent);
     }
             // TODO - fill in here
@@ -87,8 +91,16 @@ public class MainActivity extends Activity {
                 }
                 cursor.moveToFirst();
                 String name = cursor.getString(0);
-                person.setName(name);
-                startViewTripActivity();
+                Log.v(name,"name");
+                String destination = cursor.getString(1);
+                Date time = new Date(cursor.getLong(2));
+                trip.setName(name);
+                trip.setDestination(destination);
+                trip.setTime(time);
+                Intent intent = new Intent(this,ViewTripActivity.class);
+                intent.putExtra("name", trip);
+                startActivity(intent);
+                cursor.close();
             }
         }
 	}

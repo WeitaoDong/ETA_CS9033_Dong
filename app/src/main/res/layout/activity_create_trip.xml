@@ -19,18 +19,18 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:hint="@string/name"/>
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="start"/>
-    <EditText
-        android:id = "@+id/start"
-        android:layout_weight="1"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:hint="@string/start"
-        android:ellipsize="end"
-        android:singleLine="true"/>
+    <!--<TextView-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="start"/>-->
+    <!--<EditText-->
+        <!--android:id = "@+id/start"-->
+        <!--android:layout_weight="1"-->
+        <!--android:layout_width="fill_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:hint="@string/start"-->
+        <!--android:ellipsize="end"-->
+        <!--android:singleLine="true"/>-->
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -51,16 +51,16 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:hint="@string/friends"/>
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="start_time"/>
-    <EditText
-        android:id = "@+id/start_time"
-        android:layout_weight="1"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="@string/start_time"/>
+    <!--<TextView-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="start_time"/>-->
+    <!--<EditText-->
+        <!--android:id = "@+id/start_time"-->
+        <!--android:layout_weight="1"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:hint="@string/start_time"/>-->
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -76,5 +76,5 @@
         android:layout_height="wrap_content"
         android:id="@+id/done"
         android:text="@string/done"
-        android:onClick="MainActivity.class"/>
+        android:onClick="saveTrip"/>
 </LinearLayout>

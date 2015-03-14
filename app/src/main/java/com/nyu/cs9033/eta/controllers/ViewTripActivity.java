@@ -14,6 +14,7 @@ import android.widget.TextView;
 import org.w3c.dom.Text;
 
 import java.util.ArrayList;
+import java.util.EmptyStackException;
 import java.util.Iterator;
 
 public class ViewTripActivity extends Activity {
@@ -30,9 +31,8 @@ public class ViewTripActivity extends Activity {
         destination = (TextView) findViewById(R.id.destination);
         time = (TextView) findViewById(R.id.time);
         friends = (TextView) findViewById(R.id.friends);
-        Log.v("222222","222");
+        Log.v(getIntent().toString(),"222");
         Trip trip = getTrip(getIntent());
-        Log.v("333333","222");
         viewTrip(trip);
 	}
 	
@@ -48,19 +48,16 @@ public class ViewTripActivity extends Activity {
 	 * is none.
 	 */
 	public Trip getTrip(Intent i) {
-        ArrayList<Trip> trips = i.getExtras().getParcelableArrayList("parcel");
-        if(trips!=null) {
-            Trip trip = trips.get(0);
-            return trip;
+        try {
+            ArrayList<Trip> trips = i.getExtras().getParcelableArrayList("name");
+            if (trips != null) {
+                Trip trip = trips.get(0);
+                return trip;
+            }
+        } catch (Exception e){
+            Log.v(e.toString(),"null");
         }
         return null;
-//        i = getIntent();
-//        String message = i.getStringExtra(MainActivity.EXTRA_MESSAGE);
-//        TextView textView = new TextView(this);
-//        textView.setText(message);
-		// TODO - fill in here
-
-
 	}
 
 	/**

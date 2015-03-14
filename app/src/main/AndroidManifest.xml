@@ -50,10 +50,10 @@
         <activity
             android:name=".createTrip"
             android:label="@string/title_activity_create_trip"
-            android:parentActivityName=".controllers.CreateTripActivity" >
+            android:parentActivityName=".controllers.MainActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.nyu.cs9033.eta.controllers.CreateTripActivity" />
+                android:value="com.nyu.cs9033.eta.controllers.MainActivity" />
         </activity>
     </application>
 

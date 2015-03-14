@@ -3,20 +3,32 @@ package com.nyu.cs9033.eta.models;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 
 public class Trip implements Parcelable {
 	
 	// Member fields should exist here, what else do you need for a trip?
 	// Please add additional fields
+    private UUID mId;
 	private String name;
     private List<Person> friends;
     private String start;
     private String destination;
     private Date time;
+    private static final String JSON_ID = "id";
+    private static final String JSON_DESTINATION = "destination";
+    private static final String JSON_PEOPLE = "friends";
+    private static final String JSON_DATE = "date";
+
+
 	public String getName(){
         return name;
     }
@@ -110,6 +122,16 @@ public class Trip implements Parcelable {
 	/**
 	 * Feel free to add additional functions as necessary below.
 	 */
+
+    public JSONObject toJSON() throws JSONException {
+        JSONObject json = new JSONObject();
+        json.put(JSON_ID,mId.toString());
+        json.put(JSON_DESTINATION,destination);
+        json.put(JSON_PEOPLE,new JSONArray(friends));
+        json.put(JSON_DATE,time.getTime());
+        return json;
+    }
+
 	public Trip(){
         friends = new ArrayList<Person>();
         name = null;
