@@ -37,6 +37,7 @@ public class MainActivity extends Activity {
         Log.v(TAG,"index"+1);
         Button create_trip = (Button) findViewById(R.id.create_trip);
         Button view_trip = (Button) findViewById(R.id.view);
+        Button view_history = (Button) findViewById(R.id.trip_history);
         create_trip.setOnClickListener(new View.OnClickListener(){
             public void onClick(View view){
                 startCreateTripActivity();
@@ -45,6 +46,11 @@ public class MainActivity extends Activity {
         view_trip.setOnClickListener(new View.OnClickListener(){
             public void onClick(View view){
                 startViewTripActivity();
+            }
+        });
+        view_history.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View view){
+                startTripHistoryActivity();
             }
         });
         // viewTrip.setOnClickListener(this);
@@ -72,7 +78,11 @@ public class MainActivity extends Activity {
             intent.putExtra("create trip",trip);
             startActivity(intent);
     }
-            // TODO - fill in here
+
+    public void startTripHistoryActivity() {
+        Intent intent = new Intent(this,TripHistoryActivity.class);
+        startActivity(intent);
+    }
 	
 	/**
 	 * Receive result from CreateTripActivity here.

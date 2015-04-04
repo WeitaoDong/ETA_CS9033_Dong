@@ -55,6 +55,9 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.nyu.cs9033.eta.controllers.MainActivity" />
         </activity>
+        <activity android:name=".controllers.TripHistoryActivity"
+                  android:label="Check the history"
+                  android:parentActivityName=".controllers.MainActivity"/>
     </application>
 
 </manifest>

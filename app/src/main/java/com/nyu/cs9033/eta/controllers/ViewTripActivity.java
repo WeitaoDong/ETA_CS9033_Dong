@@ -7,7 +7,10 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.ListView;
 import android.widget.TextView;
+
+import java.util.ArrayList;
 
 
 public class ViewTripActivity extends Activity {
@@ -59,7 +62,8 @@ public class ViewTripActivity extends Activity {
             TextView name1 = (TextView) findViewById(R.id.name);
             name1.setText(trip.getName());
             TextView friends1 = (TextView) findViewById(R.id.destination);
-            friends1.setText(trip.getFriends());
+            String friends2 =trip.ConvertFriendsToString(trip.getFriends());
+            friends1.setText(friends2);
             TextView destination1 = (TextView) findViewById(R.id.friends);
             destination1.setText(trip.getDestination());
             TextView time1 = (TextView) findViewById(R.id.time);
