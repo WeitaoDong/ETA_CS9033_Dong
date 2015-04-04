@@ -1,21 +1,17 @@
 package com.nyu.cs9033.eta.controllers;
 
 import com.nyu.cs9033.eta.R;
-import com.nyu.cs9033.eta.models.Person;
 import com.nyu.cs9033.eta.models.Trip;
 
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
+import android.widget.ListView;
 import android.widget.TextView;
 
-import org.w3c.dom.Text;
-
 import java.util.ArrayList;
-import java.util.EmptyStackException;
-import java.util.Iterator;
+
 
 public class ViewTripActivity extends Activity {
 
@@ -25,7 +21,6 @@ public class ViewTripActivity extends Activity {
 		super.onCreate(savedInstanceState);
         Trip trip = getTrip(getIntent());
         setTitle("View Trip");
-//        setResult
 
 //        destination = (TextView) findViewById(R.id.destination);
 //        time = (TextView) findViewById(R.id.time);
@@ -67,7 +62,8 @@ public class ViewTripActivity extends Activity {
             TextView name1 = (TextView) findViewById(R.id.name);
             name1.setText(trip.getName());
             TextView friends1 = (TextView) findViewById(R.id.destination);
-            friends1.setText(trip.getFriends());
+            String friends2 =trip.ConvertFriendsToString(trip.getFriends());
+            friends1.setText(friends2);
             TextView destination1 = (TextView) findViewById(R.id.friends);
             destination1.setText(trip.getDestination());
             TextView time1 = (TextView) findViewById(R.id.time);

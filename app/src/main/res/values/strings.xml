@@ -16,4 +16,11 @@
     <string name="done">Done</string>
     <string name="cancel">Cancel the Trip!</string>
     <string name="title_activity_create_trip">createTrip</string>
+    <string name="trip_history">View Trip history</string>
+    <string name="trip_array1">TripHistory1</string>
+    <string name="trip_array2">TripHistory2</string>
+    <string name="trip_array3">TripHistory3</string>
+    <string name="trip_array4">TripHistory4</string>
+    <string name="trip_array5">TripHistory5</string>
+    <string name="trip_array6">TripHistory6</string>
 </resources>

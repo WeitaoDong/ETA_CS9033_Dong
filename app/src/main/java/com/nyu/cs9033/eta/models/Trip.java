@@ -18,23 +18,23 @@ public class Trip implements Parcelable {
 	// Member fields should exist here, what else do you need for a trip?
 	// Please add additional fields
 	private String name;
-    private String friends;
+    private ArrayList<String> friends;
     private String destination;
     private String time;
-    private static final String JSON_ID = "id";
-    private static final String JSON_DESTINATION = "destination";
-    private static final String JSON_PEOPLE = "friends";
-    private static final String JSON_DATE = "date";
+    private int tripID;
 
-
-	public String getName(){
+    public String getName(){
         return name;
     }
     public void setName(String name){this.name = name;}
-    public String getFriends(){
+    public ArrayList<String> getFriends(){
         return friends;
     }
-    public void setFriends(String friends){this.friends = friends;}
+    public void setFriends(ArrayList<String > friends){
+        for(int i=0;i<friends.size();i++){
+            this.friends.set(i,friends.get(i));
+        }
+    }
     public String getDestination(){
         return destination;
     }
@@ -43,6 +43,8 @@ public class Trip implements Parcelable {
         return time;
     }
     public void setTime(String time){this.time = time;}
+    public int getTripID() { return tripID;}
+    public void setTripID(int id){ this.tripID = id;}
 	/**
 	 * Parcelable creator. Do not modify this function.
 	 */
@@ -64,10 +66,12 @@ public class Trip implements Parcelable {
 	 * Model fields.
 	 */
 	public Trip(Parcel p) {
+        tripID = p.readInt();
         name = p.readString();
-        friends = p.readString();
         destination = p.readString();
+        friends = (ArrayList<String>)p.readSerializable();
         time = p.readString();
+//        time = (Date)p.readSerializable();
 		// TODO - fill in here
 	}
 	
@@ -79,7 +83,8 @@ public class Trip implements Parcelable {
 	 */
 
 
-	public Trip(String name,String friends, String destination,String time) {
+	public Trip(int trip_ID,String name,ArrayList<String> friends, String destination,String time) {
+        this.tripID = trip_ID;
         this.name = name;
         this.friends = friends;
         this.destination = destination;
@@ -102,10 +107,12 @@ public class Trip implements Parcelable {
 	 */
 	@Override
 	public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(this.tripID);
 		dest.writeString(this.name);
-        dest.writeString(this.friends);
+        dest.writeSerializable(this.friends);
         dest.writeString(this.destination);
         dest.writeString(this.time);
+//        dest.writeSerializable(this.time);
 		// TODO - fill in here 
 	}
 	
@@ -113,16 +120,28 @@ public class Trip implements Parcelable {
 	 * Feel free to add additional functions as necessary below.
 	 */
 
-//    public JSONObject toJSON() throws JSONException {
-//        JSONObject json = new JSONObject();
-//        json.put(JSON_ID,mId.toString());
-//        json.put(JSON_DESTINATION,destination);
-//        json.put(JSON_PEOPLE,new JSONArray(friends));
-//        json.put(JSON_DATE,time.getTime());
-//        return json;
-//    }
+    // convert String to List
+    public ArrayList<String> ConvertFriendsToList(String friends1){
+        String[] vfriend = friends1.split("\\,");
+        ArrayList<String> vfriends = new ArrayList<String>();
+        for(String v:vfriend){
+            vfriends.add(v);
+        }
+        return vfriends;
+    }
 
+    //convert List to String
+    public String ConvertFriendsToString(ArrayList<String> friends){
+        String friends2 ="";
+        for(int i=0; i<friends.size();i++) {
+            friends2+=friends.get(i)+" ";
+        }
+        return friends2;
+    }
+
+    //initial Trip
 	public Trip(){
+        tripID = 0;
         name = null;
         friends = null;
         destination = null;
