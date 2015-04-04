@@ -25,6 +25,7 @@ public class ViewTripActivity extends Activity {
 		super.onCreate(savedInstanceState);
         Trip trip = getTrip(getIntent());
         setTitle("View Trip");
+//        setResult
 
 //        destination = (TextView) findViewById(R.id.destination);
 //        time = (TextView) findViewById(R.id.time);
