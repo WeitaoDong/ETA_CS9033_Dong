@@ -64,7 +64,7 @@ public class MainActivity extends Activity {
 	 */
 	public void startCreateTripActivity() {
             Intent intent = new Intent(this, CreateTripActivity.class);
-            startActivityForResult(intent,REQUEST_DATA);
+            startActivity(intent);
         }
 		// TODO - fill in here
 	
@@ -75,7 +75,7 @@ public class MainActivity extends Activity {
 	 */
 	public void startViewTripActivity() {
             Intent intent = new Intent(this, ViewTripActivity.class);
-            intent.putExtra("create trip",trip);
+//            intent.putExtra("create trip",trip);
             startActivity(intent);
     }
 
@@ -98,12 +98,12 @@ public class MainActivity extends Activity {
 	 * use, i.e. to view the trip.
 	 * 
 	 */
-	@Override
-	public void onActivityResult(int requestCode, int resultCode, Intent data) {
-		// TODO - fill in here
-            if(resultCode==1) {
-                trip = data.getParcelableExtra("create trip");
-            }
+//	@Override
+//	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+//		// TODO - fill in here
+//            if(resultCode==1) {
+//                trip = data.getParcelableExtra("create trip");
+//            }
 //        if(resultCode == REQUEST_DATA) {
 //            if (resultCode == RESULT_OK) {
 //                Uri uri = data.getData();
@@ -129,5 +129,5 @@ public class MainActivity extends Activity {
 //                cursor.close();
 //            }
 //        }
-	}
+//	}
 }

@@ -2,11 +2,15 @@ package com.nyu.cs9033.eta.controllers;
 
 import com.nyu.cs9033.eta.R;
 import com.nyu.cs9033.eta.models.Trip;
+import com.nyu.cs9033.eta.models.TripDatabaseHelper;
 
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -16,10 +20,12 @@ import java.util.ArrayList;
 public class ViewTripActivity extends Activity {
 
 	private static final String TAG = "ViewTripActivity";
+    private static SQLiteDatabase db;
+    private static TripDatabaseHelper tripDatabaseHelper;
+    private Trip trip;
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-        Trip trip = getTrip(getIntent());
         setTitle("View Trip");
 
 //        destination = (TextView) findViewById(R.id.destination);
@@ -28,6 +34,7 @@ public class ViewTripActivity extends Activity {
 //        Log.v(getIntent().toString(),"222");
 //        Trip trip = getTrip(getIntent());
         setContentView(R.layout.activity_view_trip);
+        Trip trip = getTrip();
         viewTrip(trip);
 
 	}
@@ -43,11 +50,23 @@ public class ViewTripActivity extends Activity {
 	 * passed to TripViewer, or null if there
 	 * is none.
 	 */
-	public Trip getTrip(Intent i) {
-        Trip trip = i.getParcelableExtra("create trip");
-        if (trip != null) {
-            return trip;
-        } else return null;
+	public Trip getTrip() {
+        // ToDo
+//        db = openOrCreateDatabase("trips", MODE_PRIVATE, null);
+        tripDatabaseHelper = new TripDatabaseHelper(this);
+//        tripDatabaseHelper.onCreate(db);
+        Cursor cursor = tripDatabaseHelper.getReadableDatabase().rawQuery("select * from trips order by _id desc",null);
+        if(cursor.moveToFirst()) {
+//        Log.e("4321"+TAG,Integer.toString(cursor.getInt(0)));
+//        Log.e("4321"+TAG,cursor.getString(1));
+            trip = new Trip();
+            trip.setName(cursor.getString(1));
+            trip.setFriends(cursor.getString(2));
+            trip.setDestination(cursor.getString(3));
+            trip.setTime(cursor.getString(4));
+        }
+//        db.close();
+        return trip;
     }
 
 

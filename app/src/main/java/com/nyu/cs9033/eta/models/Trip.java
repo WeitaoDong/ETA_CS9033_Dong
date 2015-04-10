@@ -30,10 +30,13 @@ public class Trip implements Parcelable {
     public ArrayList<String> getFriends(){
         return friends;
     }
-    public void setFriends(ArrayList<String > friends){
-        for(int i=0;i<friends.size();i++){
-            this.friends.set(i,friends.get(i));
+    public void setFriends(String friends){
+        String[] tmp = friends.split(",");
+        ArrayList<String> res = new ArrayList<String>();
+        for(int i=0; i<tmp.length;i++){
+            res.add(tmp[i]);
         }
+        this.friends = res;
     }
     public String getDestination(){
         return destination;
@@ -44,7 +47,6 @@ public class Trip implements Parcelable {
     }
     public void setTime(String time){this.time = time;}
     public int getTripID() { return tripID;}
-    public void setTripID(int id){ this.tripID = id;}
 	/**
 	 * Parcelable creator. Do not modify this function.
 	 */
@@ -83,8 +85,8 @@ public class Trip implements Parcelable {
 	 */
 
 
-	public Trip(int trip_ID,String name,ArrayList<String> friends, String destination,String time) {
-        this.tripID = trip_ID;
+	public Trip(String name,ArrayList<String> friends, String destination,String time) {
+//        this.tripID = trip_ID;
         this.name = name;
         this.friends = friends;
         this.destination = destination;
@@ -122,7 +124,7 @@ public class Trip implements Parcelable {
 
     // convert String to List
     public ArrayList<String> ConvertFriendsToList(String friends1){
-        String[] vfriend = friends1.split("\\,");
+        String[] vfriend = friends1.split(",");
         ArrayList<String> vfriends = new ArrayList<String>();
         for(String v:vfriend){
             vfriends.add(v);
@@ -141,11 +143,11 @@ public class Trip implements Parcelable {
 
     //initial Trip
 	public Trip(){
-        tripID = 0;
-        name = null;
-        friends = null;
-        destination = null;
-        time = null;
+//        tripID = ;
+//        name = null;
+//        friends = null;
+//        destination = null;
+//        time = null;
     }
 	/**
 	 * Do not implement

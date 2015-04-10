@@ -24,6 +24,7 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
+import java.util.List;
 
 public class CreateTripActivity extends Activity {
 	
@@ -48,7 +49,7 @@ public class CreateTripActivity extends Activity {
         Button CancelTrip = (Button) findViewById(R.id.cancel);
         CreateTrip.setOnClickListener(new View.OnClickListener(){
             public void onClick(View view){
-                Trip trip = createTrip();
+                trip = createTrip();
                 saveTrip(trip);
             }
         });
@@ -57,8 +58,6 @@ public class CreateTripActivity extends Activity {
                 cancelTrip();
             }
         });
-
-		// TODO - fill in here
 	}
 	
 	/**
@@ -73,11 +72,6 @@ public class CreateTripActivity extends Activity {
         String Vtrip_name = trip_name.getText().toString().trim();
         trip_friend = (EditText)findViewById(R.id.friends);
         String Vfriend = trip_friend.getText().toString().trim();
-        String[] vfriend = Vfriend.split("\\ ");
-        ArrayList<String> vfriends = new ArrayList<String>();
-        for(String v:vfriend){
-            vfriends.add(v);
-        }
         trip_destination = (EditText)findViewById(R.id.destination);
         String Vtrip_destination = trip_destination.getText().toString().trim();
         trip_time = (EditText)findViewById(R.id.time);
@@ -86,7 +80,13 @@ public class CreateTripActivity extends Activity {
             Toast.makeText(this, "All fields must be filled.", Toast.LENGTH_LONG).show();
             return null;
         } else {
-            trip = new Trip(tripID,Vtrip_name,vfriends,Vtrip_destination,Vtrip_date);
+            Log.e(Integer.toString(tripID),TAG+"4321");
+            Trip trip = new Trip();
+            trip.setName(Vtrip_name);
+            Log.e(TAG+"4321",Vfriend);
+            trip.setFriends((Vfriend));
+            trip.setDestination(Vtrip_destination);
+            trip.setTime(Vtrip_date);
             return trip;
         }
 //        return trip;
@@ -105,25 +105,28 @@ public class CreateTripActivity extends Activity {
 	 * saved.
 	 */
 	public boolean saveTrip(Trip trip) {
-        createTrip();
-        Log.v(TAG, "111");
+//        createTrip();
+//        Log.v(TAG, "111");
         if(trip!=null) {
-            db = openOrCreateDatabase("trips.db", MODE_PRIVATE, null);
+
+            //Get the database then insert trip
             tripDatabaseHelper = new TripDatabaseHelper(this);
-            tripDatabaseHelper.onCreate(db);
-            Cursor cursor = db.rawQuery("select max( _id) from trips; ",null);
-            cursor.moveToFirst();
-            trip.setTripID(cursor.getInt(0)+1);
-            Log.i(TAG,cursor.toString());
-//            trip.setTripID(cursor.getInt(0) + 1);
             tripDatabaseHelper.insertTrip(trip);
-            Intent returnIntent = new Intent();
-            setResult(RESULT_OK, returnIntent);
-            db.close();
+
+//            Cursor cursor = db.rawQuery("select max( _id) from trips; ",null);
+//            cursor.moveToFirst();
+//            trip.setTripID(cursor.getInt(0)+1);
+//            tripDatabaseHelper.insertTrip(trip);
+//            Log.i(TAG + "4321", Integer.toString(cursor.getColumnIndex("name")));
+//            Log.i(TAG+"4321",Integer.toString(cursor.getColumnIndex(" _id")));
+//            Log.i(TAG+"4321",Integer.toString(cursor.getColumnIndex("friends")));
+//            Intent returnIntent = new Intent();
+//            setResult(RESULT_OK, returnIntent);
+//            db.close();
+
             finish();
             return true;
         } else return false;
-		// TODO - fill in here
 	}
 //    public void onClick(View view){
 //        String destination =
@@ -145,7 +148,6 @@ public class CreateTripActivity extends Activity {
         Intent intent = new Intent(this,MainActivity.class);
 	    setResult(RESULT_CANCELED);
         finish();
-		// TODO - fill in here
 	}
 
 

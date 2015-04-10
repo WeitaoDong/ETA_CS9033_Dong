@@ -87,10 +87,7 @@ public class Person implements Parcelable {
 	/**
 	 * Feel free to add additional functions as necessary below.
 	 */
-	public Person(){
-        name = null;
-        location = null;
-    }
+	public Person(){    }
 	/**
 	 * Do not implement
 	 */

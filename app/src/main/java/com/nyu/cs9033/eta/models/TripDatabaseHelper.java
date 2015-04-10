@@ -21,7 +21,7 @@ public class TripDatabaseHelper extends SQLiteOpenHelper{
     private static final String DATABASE_NAME = "trips.db";
 
     public static final String TABLE_TRIP = "trips";
-    public static final String COLUMN_TRIP_ID = " _id";
+    public static final String COLUMN_TRIP_ID = "_id";
     public static final String COLUMN_TRIP_NAME = "name";
     public static final String COLUMN_FRIENDS = "friends";
     public static final String COLUMN_TRIP_DATE = "date";
@@ -42,43 +42,40 @@ public class TripDatabaseHelper extends SQLiteOpenHelper{
     @Override
     public void onCreate(SQLiteDatabase db){
         // create trip table
-        db.execSQL("CREATE TABLE IF NOT EXISTS " + TABLE_TRIP + " ( "
-                + COLUMN_TRIP_ID + " integer primary key autoincrement, "
-                + COLUMN_TRIP_NAME + " trip_name, "
-                + COLUMN_FRIENDS + " friends, "
-                + COLUMN_TRIP_DESTINATION + " TEXT, "
-                + COLUMN_TRIP_DATE + " Integer)");
+        db.execSQL("create table if not exists " + TABLE_TRIP + "("
+                        + COLUMN_TRIP_ID + " integer primary key autoincrement, "
+                        + COLUMN_TRIP_NAME+ " varchar(50), "
+                        + COLUMN_FRIENDS + " varchar(50), "
+                        + COLUMN_TRIP_DESTINATION + " varchar(200), "
+                        + COLUMN_TRIP_DATE + " integer)");
         // create location table
-        db.execSQL("CREATE TABLE IF NOT EXISTS " + TABLE_LOCATION + " ( "
-                + COLUMN_LOC_TRIP_ID + " int references trip(_id), "
-                + COLUMN_LOC_TIMESTAMP + " integer, "
-                + COLUMN_LOC_LAT + " real, "
-                + COLUMN_LOC_LONG + " real, "
-                + COLUMN_LOC_ALT + " real, "
-                + COLUMN_LOC_PROVIDER + " varchar(100))");
+//        db.execSQL("CREATE TABLE IF NOT EXISTS " + TABLE_LOCATION + " ( "
+//                + COLUMN_LOC_TRIP_ID + " int references trip(_id), "
+//                + COLUMN_LOC_TIMESTAMP + " integer, "
+//                + COLUMN_LOC_LAT + " real, "
+//                + COLUMN_LOC_LONG + " real, "
+//                + COLUMN_LOC_ALT + " real, "
+//                + COLUMN_LOC_PROVIDER + " varchar(100))");
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion){
         //Drop older table if exists
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_TRIP);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_LOCATION);
+//        db.execSQL("DROP TABLE IF EXISTS " + TABLE_LOCATION);
 
         //create table again
         onCreate(db);
     }
 
-    public void insertTrip(Trip trip){
-        SQLiteDatabase db = this.getWritableDatabase();
+    public long insertTrip(Trip trip){
         ContentValues cv = new ContentValues();
-        cv.put(COLUMN_TRIP_ID,trip.getTripID());
         cv.put(COLUMN_TRIP_NAME,trip.getName());
         cv.put(COLUMN_FRIENDS,trip.ConvertFriendsToString(trip.getFriends()));
         cv.put(COLUMN_TRIP_DESTINATION, trip.getDestination());
         cv.put(COLUMN_TRIP_DATE,trip.getTime());
-        Log.v(TAG,trip.ConvertFriendsToString(trip.getFriends())+"123");
-        db.insert(TABLE_TRIP, null, cv);
-        db.close();
+        Log.e(TAG+"123",trip.ConvertFriendsToString(trip.getFriends())+trip.getName());
+        return getWritableDatabase().insert(TABLE_TRIP, null, cv);
     }
 
     public ArrayList<Trip> getAllTrip() {
@@ -89,9 +86,8 @@ public class TripDatabaseHelper extends SQLiteOpenHelper{
         if (cursor.moveToFirst()) {
             for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
                 Trip trip = new Trip();
-                trip.setTripID(cursor.getInt(0));
                 trip.setName(cursor.getString(1));
-                trip.setFriends(trip.ConvertFriendsToList(cursor.getString(2)));
+                trip.setFriends(cursor.getString(2));
                 trip.setDestination(cursor.getString(3));
                 trip.setTime(cursor.getString(4));
                 tripList.add(trip);

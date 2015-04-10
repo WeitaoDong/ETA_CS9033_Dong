@@ -27,7 +27,7 @@ public class TripHistoryActivity extends ListActivity {
 
     private static final String TAG = "TripHistoryActivity";
     private static final String TABLE_TRIP = "trip";
-    private TripDatabaseHelper dbHelper;
+    private TripDatabaseHelper tripDatabaseHelper;
     private SQLiteDatabase database;
     private List<Trip> tripList;
     private List<String> res;
@@ -49,8 +49,8 @@ public class TripHistoryActivity extends ListActivity {
     }
 
     public List<String> GetAllName(){
-        tripList = dbHelper.getAllTrip();
-        for(Trip a:tripList){
+        tripDatabaseHelper = new TripDatabaseHelper(this);
+        for(Trip a:tripDatabaseHelper.getAllTrip()){
             res.add(a.getName());
         }
         return res;
@@ -67,12 +67,12 @@ public class TripHistoryActivity extends ListActivity {
     }
 
     public void onResume() {
-        dbHelper.onOpen(database);
+        tripDatabaseHelper.onOpen(database);
         super.onResume();
     }
 
     public void onPause() {
-        dbHelper.close();
+        tripDatabaseHelper.close();
         super.onPause();
     }
 }
