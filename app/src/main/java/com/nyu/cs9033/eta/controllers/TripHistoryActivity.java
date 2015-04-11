@@ -23,7 +23,7 @@ import java.util.List;
 /**
  * Created by weitao on 4/4/15.
  */
-public class TripHistoryActivity extends ListActivity {
+public class TripHistoryActivity extends Activity {
 
     private static final String TAG = "TripHistoryActivity";
     private static final String TABLE_TRIP = "trip";
@@ -31,25 +31,29 @@ public class TripHistoryActivity extends ListActivity {
     private SQLiteDatabase database;
     private List<Trip> tripList;
     private List<String> res;
+    private ListView listView;
 
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_triphistoryactivity);
+        listView = (ListView) findViewById(R.id.trip_history);
         setTitle("Trip_History");
+
         viewName();
-        Button detail1 = (Button)findViewById(R.id.trip_array1);
-        detail1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(null,ViewTripActivity.class);
-                intent.putExtra("trip", tripList.get(0));
-                startActivity(intent);
-            }
-        });
+//        Button detail1 = (Button)findViewById(R.id.trip_history);
+//        detail1.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Intent intent = new Intent(null,ViewTripActivity.class);
+//                intent.putExtra("trip", tripList.get(0));
+//                startActivity(intent);
+//            }
+//        });
     }
 
     public List<String> GetAllName(){
         tripDatabaseHelper = new TripDatabaseHelper(this);
+        res = new ArrayList<String>();
         for(Trip a:tripDatabaseHelper.getAllTrip()){
             res.add(a.getName());
         }
@@ -57,11 +61,10 @@ public class TripHistoryActivity extends ListActivity {
     }
 
     public void viewName(){
-        ArrayList<String> name = new ArrayList<String>(GetAllName());
+        tripDatabaseHelper = new TripDatabaseHelper(this);
+        ArrayList<String> name = tripDatabaseHelper.getAllTripName();
         if(!name.isEmpty()){
-            ArrayList<String> t = new ArrayList<String>(name);
-            ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,t);
-            ListView listView = (ListView) findViewById(R.id.trip_history);
+            ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,name);
             listView.setAdapter(arrayAdapter);
         }
     }

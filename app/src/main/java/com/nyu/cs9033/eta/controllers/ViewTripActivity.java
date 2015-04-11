@@ -51,7 +51,6 @@ public class ViewTripActivity extends Activity {
 	 * is none.
 	 */
 	public Trip getTrip() {
-        // ToDo
 //        db = openOrCreateDatabase("trips", MODE_PRIVATE, null);
         tripDatabaseHelper = new TripDatabaseHelper(this);
 //        tripDatabaseHelper.onCreate(db);
@@ -66,6 +65,19 @@ public class ViewTripActivity extends Activity {
             trip.setTime(cursor.getString(4));
         }
 //        db.close();
+        return trip;
+    }
+
+
+    public Trip getTrip(Intent i) {
+        //TODO different between click on history
+        Intent intent = getIntent();
+        trip = new Trip();
+        trip = intent.getParcelableExtra("thisTrip");
+        tripDatabaseHelper=new TripDatabaseHelper(this);
+        tripDatabaseHelper.getReadableDatabase();
+        Cursor cursor = db.rawQuery("select max(button_id) from Buttons; ",null);
+
         return trip;
     }
 

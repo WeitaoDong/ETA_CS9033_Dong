@@ -80,7 +80,7 @@ public class TripDatabaseHelper extends SQLiteOpenHelper{
 
     public ArrayList<Trip> getAllTrip() {
         ArrayList<Trip> tripList = new ArrayList<Trip>();
-        String selectQuery = "SELECT * FROM" + TABLE_TRIP;
+        String selectQuery = "SELECT * FROM " + TABLE_TRIP;
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
         if (cursor.moveToFirst()) {
@@ -95,6 +95,20 @@ public class TripDatabaseHelper extends SQLiteOpenHelper{
         }
         return tripList;
     }
+
+    public ArrayList<String> getAllTripName() {
+        ArrayList<String> tripList = new ArrayList<String>();
+        String selectQuery = "SELECT * FROM " + TABLE_TRIP;
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM trips; ", null);
+        if (cursor.moveToFirst()) {
+            for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
+                tripList.add(cursor.getString(1));
+            }
+        }
+        return tripList;
+    }
+
     public long insertLocation(long tripId, Location location) {
         ContentValues cv = new ContentValues();
         cv.put(COLUMN_LOC_TRIP_ID, tripId);
