@@ -11,8 +11,8 @@
         android:text="TripName:"/>
     <ListView
         android:id="@+id/trip_history"
-        android:layout_width="wrap_content"
+        android:choiceMode="singleChoice"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content">
-
     </ListView>
 </LinearLayout>

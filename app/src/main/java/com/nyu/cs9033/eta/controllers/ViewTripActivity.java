@@ -27,16 +27,13 @@ public class ViewTripActivity extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
         setTitle("View Trip");
-
-//        destination = (TextView) findViewById(R.id.destination);
-//        time = (TextView) findViewById(R.id.time);
-//        friends = (TextView) findViewById(R.id.friends);
-//        Log.v(getIntent().toString(),"222");
-//        Trip trip = getTrip(getIntent());
         setContentView(R.layout.activity_view_trip);
-        Trip trip = getTrip();
-        viewTrip(trip);
-
+        if(getIntent().hasExtra("tripName")){
+            getViewTrip(getIntent());
+        } else {
+            Trip trip = getTrip();
+            viewTrip(trip);
+        }
 	}
 	
 	/**
@@ -51,34 +48,35 @@ public class ViewTripActivity extends Activity {
 	 * is none.
 	 */
 	public Trip getTrip() {
-//        db = openOrCreateDatabase("trips", MODE_PRIVATE, null);
         tripDatabaseHelper = new TripDatabaseHelper(this);
-//        tripDatabaseHelper.onCreate(db);
         Cursor cursor = tripDatabaseHelper.getReadableDatabase().rawQuery("select * from trips order by _id desc",null);
         if(cursor.moveToFirst()) {
-//        Log.e("4321"+TAG,Integer.toString(cursor.getInt(0)));
-//        Log.e("4321"+TAG,cursor.getString(1));
             trip = new Trip();
             trip.setName(cursor.getString(1));
             trip.setFriends(cursor.getString(2));
             trip.setDestination(cursor.getString(3));
             trip.setTime(cursor.getString(4));
         }
-//        db.close();
         return trip;
     }
 
 
-    public Trip getTrip(Intent i) {
+    public void getViewTrip(Intent i) {
         //TODO different between click on history
-        Intent intent = getIntent();
-        trip = new Trip();
-        trip = intent.getParcelableExtra("thisTrip");
-        tripDatabaseHelper=new TripDatabaseHelper(this);
-        tripDatabaseHelper.getReadableDatabase();
-        Cursor cursor = db.rawQuery("select max(button_id) from Buttons; ",null);
+//        Intent intent = getIntent();
+        tripDatabaseHelper = new TripDatabaseHelper(this);
+        Cursor cursor = tripDatabaseHelper.getReadableDatabase().rawQuery("select * from trips where name = ?; ",new String[]{i.getStringExtra("tripName")});
+        if(cursor.moveToFirst()) {
+            TextView name = (TextView) findViewById(R.id.name);
+            name.setText(cursor.getString(1));
+            TextView friends = (TextView) findViewById(R.id.destination);
+            friends.setText(cursor.getString(2));
+            TextView destination = (TextView) findViewById(R.id.friends);
+            destination.setText(cursor.getString(3));
+            TextView time = (TextView) findViewById(R.id.time);
+            time.setText(cursor.getString(4));
+        }
 
-        return trip;
     }
 
 
@@ -100,9 +98,6 @@ public class ViewTripActivity extends Activity {
             TextView time1 = (TextView) findViewById(R.id.time);
             time1.setText(trip.getTime());
 
-//            while (itr.hasNext()) {
-//                friends.append(itr.next().getName());
-//            }
         } else {
             new AlertDialog.Builder(this)
                             .setIcon(R.drawable.ic_action_error)

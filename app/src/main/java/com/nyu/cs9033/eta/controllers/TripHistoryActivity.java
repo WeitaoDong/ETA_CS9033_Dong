@@ -8,9 +8,12 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.nyu.cs9033.eta.R;
 import com.nyu.cs9033.eta.models.Trip;
@@ -19,6 +22,7 @@ import com.nyu.cs9033.eta.models.TripDatabaseHelper;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Created by weitao on 4/4/15.
@@ -38,8 +42,9 @@ public class TripHistoryActivity extends Activity {
         setContentView(R.layout.activity_triphistoryactivity);
         listView = (ListView) findViewById(R.id.trip_history);
         setTitle("Trip_History");
-
         viewName();
+
+
 //        Button detail1 = (Button)findViewById(R.id.trip_history);
 //        detail1.setOnClickListener(new View.OnClickListener() {
 //            @Override
@@ -62,10 +67,24 @@ public class TripHistoryActivity extends Activity {
 
     public void viewName(){
         tripDatabaseHelper = new TripDatabaseHelper(this);
-        ArrayList<String> name = tripDatabaseHelper.getAllTripName();
+        final ArrayList<String> name = tripDatabaseHelper.getAllTripName();
         if(!name.isEmpty()){
-            ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,name);
+            final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,name);
+
             listView.setAdapter(arrayAdapter);
+            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
+
+//                    Toast.makeText(getApplicationContext(),
+//                            "Click ListItem Number " + position, Toast.LENGTH_LONG)
+//                            .show();
+                    Object data_item = name.get(position);
+                    Intent intent = new Intent(TripHistoryActivity.this,ViewTripActivity.class);
+                    intent.putExtra("tripName", data_item.toString());
+                    startActivity(intent);
+                }
+            });
         }
     }
 
