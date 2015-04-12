@@ -19,9 +19,11 @@ public class Trip implements Parcelable {
 	// Please add additional fields
 	private String name;
     private ArrayList<String> friends;
+    private Person person = new Person();
     private String destination;
     private String time;
     private int tripID;
+    private ArrayList<String> res = new ArrayList<String>();
 
     public String getName(){
         return name;
@@ -31,13 +33,14 @@ public class Trip implements Parcelable {
         return friends;
     }
     public void setFriends(String friends){
-        String[] tmp = friends.split(",");
-        ArrayList<String> res = new ArrayList<String>();
-        for(int i=0; i<tmp.length;i++){
-            res.add(tmp[i]);
-        }
+            res.add(friends+", ");
         this.friends = res;
     }
+    public void setPerson(String person){
+        Person person1 = new Person();
+        person1.setName(person);
+    }
+
     public String getDestination(){
         return destination;
     }

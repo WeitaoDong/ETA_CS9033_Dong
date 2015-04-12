@@ -45,12 +45,21 @@
         android:layout_height="wrap_content"
         android:text="friends"
         android:textSize="20sp"/>
-    <EditText
-        android:id = "@+id/friends"
-        android:layout_width="fill_parent"
+    <TextView
+        android:id="@+id/friends"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:hint="@string/friends"
+        android:layout_gravity="fill_horizontal"
         android:textSize="20sp"/>
+    <Button
+        android:id="@+id/plusFriends"
+        android:layout_alignParentRight="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:text="+"
+        android:layout_gravity="center_horizontal"/>
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

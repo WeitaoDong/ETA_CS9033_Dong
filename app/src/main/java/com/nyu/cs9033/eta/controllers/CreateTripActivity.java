@@ -7,11 +7,17 @@ import com.nyu.cs9033.eta.models.TripDatabaseHelper;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.ContentProvider;
+import android.content.ContentResolver;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -31,14 +37,14 @@ public class CreateTripActivity extends Activity {
 	private static final String TAG = "CreateTripActivity";
     private int tripID;
 	private EditText trip_destination;
-    private EditText trip_friend;
     private EditText trip_time;
     private Date date;
     private EditText trip_name;
-    ArrayList<String> AllName = new ArrayList<String>();
-    private Trip trip;
+    private Trip trip = new Trip();
+    private TextView trip_friend;
     private SQLiteDatabase db;
     private TripDatabaseHelper tripDatabaseHelper;
+    static final int REQUEST_DATA = 1;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -47,6 +53,7 @@ public class CreateTripActivity extends Activity {
         setTitle("Create trip");
         Button CreateTrip = (Button) findViewById(R.id.create);
         Button CancelTrip = (Button) findViewById(R.id.cancel);
+        Button AddFriends = (Button) findViewById(R.id.plusFriends);
         CreateTrip.setOnClickListener(new View.OnClickListener(){
             public void onClick(View view){
                 trip = createTrip();
@@ -58,7 +65,14 @@ public class CreateTripActivity extends Activity {
                 cancelTrip();
             }
         });
+        AddFriends.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View view){
+                Intent intent = new Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI);
+                startActivityForResult(intent,REQUEST_DATA);
+            }
+        });
 	}
+
 	
 	/**
 	 * This method should be used to
@@ -70,27 +84,23 @@ public class CreateTripActivity extends Activity {
 	public Trip createTrip() {
         trip_name = (EditText)findViewById(R.id.name);
         String Vtrip_name = trip_name.getText().toString().trim();
-        trip_friend = (EditText)findViewById(R.id.friends);
-        String Vfriend = trip_friend.getText().toString().trim();
+        //todo how to deal with friends
         trip_destination = (EditText)findViewById(R.id.destination);
         String Vtrip_destination = trip_destination.getText().toString().trim();
         trip_time = (EditText)findViewById(R.id.time);
         String Vtrip_date = trip_time.getText().toString().trim();
-        if (TextUtils.isEmpty(Vtrip_name)|| TextUtils.isEmpty(Vfriend) || TextUtils.isEmpty(Vtrip_destination) || TextUtils.isEmpty(Vtrip_date) ) {
+        if (TextUtils.isEmpty(Vtrip_name)|| trip.getFriends()==null || TextUtils.isEmpty(Vtrip_destination) || TextUtils.isEmpty(Vtrip_date) ) {
             Toast.makeText(this, "All fields must be filled.", Toast.LENGTH_LONG).show();
             return null;
         } else {
             Log.e(Integer.toString(tripID),TAG+"4321");
-            Trip trip = new Trip();
             trip.setName(Vtrip_name);
-            Log.e(TAG+"4321",Vfriend);
-            trip.setFriends((Vfriend));
             trip.setDestination(Vtrip_destination);
             trip.setTime(Vtrip_date);
             return trip;
         }
-//        return trip;
     }
+
 
 	/**
 	 * For HW2 you should treat this method as a 
@@ -105,32 +115,14 @@ public class CreateTripActivity extends Activity {
 	 * saved.
 	 */
 	public boolean saveTrip(Trip trip) {
-//        createTrip();
-//        Log.v(TAG, "111");
         if(trip!=null) {
-
             //Get the database then insert trip
             tripDatabaseHelper = new TripDatabaseHelper(this);
             tripDatabaseHelper.insertTrip(trip);
-
-//            Cursor cursor = db.rawQuery("select max( _id) from trips; ",null);
-//            cursor.moveToFirst();
-//            trip.setTripID(cursor.getInt(0)+1);
-//            tripDatabaseHelper.insertTrip(trip);
-//            Log.i(TAG + "4321", Integer.toString(cursor.getColumnIndex("name")));
-//            Log.i(TAG+"4321",Integer.toString(cursor.getColumnIndex(" _id")));
-//            Log.i(TAG+"4321",Integer.toString(cursor.getColumnIndex("friends")));
-//            Intent returnIntent = new Intent();
-//            setResult(RESULT_OK, returnIntent);
-//            db.close();
-
             finish();
             return true;
         } else return false;
 	}
-//    public void onClick(View view){
-//        String destination =
-//    }
 
 	/**
 	 * This method should be used when a
@@ -150,5 +142,41 @@ public class CreateTripActivity extends Activity {
         finish();
 	}
 
+    @Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        // TODO - fill in here
+        if(data!=null) {
+            Log.e("4321"+TAG,"");
+            if (resultCode!=Activity.RESULT_OK) return;
+                Log.e("4321"+TAG,"4321");
+                Uri uri = data.getData();
+                String[] queryFields = new String[] {
+                        ContactsContract.Contacts.DISPLAY_NAME
+                };
 
+                    Cursor cursor = getApplication().getContentResolver()
+                            .query(uri, queryFields, null, null, null);
+                    // check to make sure you got the results
+                    if(cursor.getCount()==0){
+                        cursor.close();
+                        return;
+                    }
+                    // Get first row (will be only row in most cases)
+                    cursor.moveToFirst();
+                    String person = cursor.getString(0);
+                    Log.e("4321"+TAG,person);
+                    trip_friend = (TextView) findViewById(R.id.friends);
+                    Log.e("4321"+TAG,trip_friend.toString());
+                    if(trip.getFriends()==null) {
+                        trip_friend.append(person);
+                        trip.setFriends(person);
+                    } else {
+                        trip_friend.append(", ");
+                        trip_friend.append(person);
+                        trip.setFriends(person);
+                    }
+
+                    cursor.close();
+        }
+    }
 }

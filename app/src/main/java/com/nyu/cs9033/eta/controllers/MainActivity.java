@@ -25,7 +25,7 @@ public class MainActivity extends Activity {
 
 	private static final String TAG = "MainActivity";
     protected final static String EXTRA_MESSAGE = "com.nyu.cs9033.eta.MESSAGE";
-    static final int REQUEST_DATA = 1;
+
     private TextView textView;
     private Person person;
     Trip trip;
