@@ -15,8 +15,9 @@ public final class R {
         public static final int activity_vertical_margin=0x7f040001;
     }
     public static final class drawable {
-        public static final int ic_action_error=0x7f020000;
-        public static final int ic_launcher=0x7f020001;
+        public static final int background=0x7f020000;
+        public static final int ic_action_error=0x7f020001;
+        public static final int ic_launcher=0x7f020002;
     }
     public static final class id {
         public static final int Search=0x7f080007;
@@ -40,8 +41,6 @@ public final class R {
         public static final int activity_main=0x7f030001;
         public static final int activity_triphistoryactivity=0x7f030002;
         public static final int activity_view_trip=0x7f030003;
-        public static final int contacts_list_item=0x7f030004;
-        public static final int contacts_list_view=0x7f030005;
     }
     public static final class menu {
         public static final int main=0x7f070000;
