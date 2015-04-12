@@ -57,6 +57,7 @@ public class CreateTripActivity extends Activity {
         Button CancelTrip = (Button) findViewById(R.id.cancel);
         Button AddFriends = (Button) findViewById(R.id.plusFriends);
         Button CheckPlace = (Button) findViewById(R.id.checkPlace);
+        Button SearchPlace = (Button) findViewById(R.id.Search);
         CreateTrip.setOnClickListener(new View.OnClickListener(){
             public void onClick(View view){
                 trip = createTrip();
@@ -85,7 +86,20 @@ public class CreateTripActivity extends Activity {
                 }
             }
         });
-
+        SearchPlace.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View view){
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                intent.setData(Uri.parse(uri_location));
+                EditText place = (EditText) findViewById(R.id.place);
+                String place1 = place.getText().toString().trim();
+                EditText food = (EditText) findViewById(R.id.food);
+                String food1 = food.getText().toString().trim();
+                intent.putExtra("searchVal",place1+"::"+food1);
+                if(intent.resolveActivity(getPackageManager())!=null){
+                    startActivityForResult(intent,REQUEST_LOCATION);
+                }
+            }
+        });
 	}
 
 	
@@ -97,11 +111,12 @@ public class CreateTripActivity extends Activity {
 	 * by the View.
 	 */
 	public Trip createTrip() {
+        // Get the Trip_name and time then save it to Trip
         trip_name = (EditText)findViewById(R.id.name);
         String Vtrip_name = trip_name.getText().toString().trim();
         trip_time = (EditText)findViewById(R.id.time);
         String Vtrip_date = trip_time.getText().toString().trim();
-        //TODO judge the Friends is empty
+        // Judge whether user has finished all the form or not
         if (TextUtils.isEmpty(Vtrip_name)||
                 trip.getFriends()==null ||
                 trip.getDestination()==null ||
@@ -109,6 +124,7 @@ public class CreateTripActivity extends Activity {
             Toast.makeText(this, "All fields must be filled.", Toast.LENGTH_LONG).show();
             return null;
         } else {
+            // Save the trip_name and time, others are saved by OnActivityResult function
             trip.setName(Vtrip_name);
             trip.setTime(Vtrip_date);
             return trip;
@@ -130,7 +146,7 @@ public class CreateTripActivity extends Activity {
 	 */
 	public boolean saveTrip(Trip trip) {
         if(trip!=null) {
-            //Get the database then insert trip
+            //Get the database then insert trip finally return to MainActivity
             tripDatabaseHelper = new TripDatabaseHelper(this);
             tripDatabaseHelper.insertTrip(trip);
             finish();
@@ -158,11 +174,12 @@ public class CreateTripActivity extends Activity {
 
     @Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        // TODO - fill in here
+        // Check whether the data is null
         if(data!=null) {
-            Log.e("4321" +TAG,"4321 + " + requestCode);
+//            Log.e("4321" +TAG,"4321 + " + requestCode);
             switch (requestCode){
                 case REQUEST_DATA:
+                    // Get the name from data
                     Uri uri = data.getData();
                     String[] queryFields = new String[]{
                             ContactsContract.Contacts.DISPLAY_NAME
@@ -180,6 +197,7 @@ public class CreateTripActivity extends Activity {
                     String person = cursor.getString(0);
                     // Display the name to the friends TextView
                     trip_friend = (TextView) findViewById(R.id.friends);
+                    // Judge it whether the first one, if it is not add ", " before the name, then save it to Trip
                     if (trip.getFriends() == null ||
                             trip.ConvertFriendsToString(trip.getFriends()).length() == 0) {
                         trip_friend.append(person);
@@ -194,19 +212,18 @@ public class CreateTripActivity extends Activity {
                     cursor.close();
                     break;
                 case REQUEST_LOCATION:
-                    Log.e("4321" + TAG, "4321 = " + requestCode);
+//                    Log.e("4321" + TAG, "4321 = " + requestCode);
+                    // Get the Bundle from data
                     Bundle extras = data.getExtras();
+                    // Get the ArrayList named retVal
                     ArrayList<String> res = new ArrayList<String>(extras.getStringArrayList("retVal"));
-
-                    // check to make sure you got the results
-
-                    // Get first row (will be only row in most cases)
-
-                    String name = res.get(0);
+                    // Get the first String name
+                    String Des_name = res.get(0);
                     // Display the name to the friends TextView
                     trip_destination = (TextView) findViewById(R.id.destination);
-                    trip_destination.append(name);
-                    trip.setDestination(name);
+                    trip_destination.append(Des_name);
+                    // Save it to Trip
+                    trip.setDestination(Des_name);
                     break;
             }
         }

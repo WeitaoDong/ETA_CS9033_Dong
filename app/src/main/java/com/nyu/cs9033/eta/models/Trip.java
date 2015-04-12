@@ -50,6 +50,7 @@ public class Trip implements Parcelable {
     }
     public void setTime(String time){this.time = time;}
     public int getTripID() { return tripID;}
+
 	/**
 	 * Parcelable creator. Do not modify this function.
 	 */
@@ -94,7 +95,6 @@ public class Trip implements Parcelable {
         this.friends = friends;
         this.destination = destination;
         this.time = time;
-		// TODO - fill in here, please note you must have more arguments here
 	}
 
 	/**
@@ -118,7 +118,6 @@ public class Trip implements Parcelable {
         dest.writeString(this.destination);
         dest.writeString(this.time);
 //        dest.writeSerializable(this.time);
-		// TODO - fill in here 
 	}
 	
 	/**
@@ -145,13 +144,8 @@ public class Trip implements Parcelable {
     }
 
     //initial Trip
-	public Trip(){
-//        tripID = ;
-//        name = null;
-//        friends = null;
-//        destination = null;
-//        time = null;
-    }
+	public Trip(){}
+
 	/**
 	 * Do not implement
 	 */

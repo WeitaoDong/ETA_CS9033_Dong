@@ -53,8 +53,7 @@ public class MainActivity extends Activity {
                 startTripHistoryActivity();
             }
         });
-        // viewTrip.setOnClickListener(this);
-		// TODO - fill in here
+
 	}
 
 	/**
@@ -100,7 +99,7 @@ public class MainActivity extends Activity {
 	 */
 //	@Override
 //	public void onActivityResult(int requestCode, int resultCode, Intent data) {
-//		// TODO - fill in here
+//
 //            if(resultCode==1) {
 //                trip = data.getParcelableExtra("create trip");
 //            }

@@ -43,42 +43,31 @@ public class TripHistoryActivity extends Activity {
         listView = (ListView) findViewById(R.id.trip_history);
         setTitle("Trip_History");
         viewName();
-
-
-//        Button detail1 = (Button)findViewById(R.id.trip_history);
-//        detail1.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Intent intent = new Intent(null,ViewTripActivity.class);
-//                intent.putExtra("trip", tripList.get(0));
-//                startActivity(intent);
-//            }
-//        });
     }
 
-    public List<String> GetAllName(){
-        tripDatabaseHelper = new TripDatabaseHelper(this);
-        res = new ArrayList<String>();
-        for(Trip a:tripDatabaseHelper.getAllTrip()){
-            res.add(a.getName());
-        }
-        return res;
-    }
+//    public List<String> GetAllName(){
+//        tripDatabaseHelper = new TripDatabaseHelper(this);
+//        res = new ArrayList<String>();
+//        for(Trip a:tripDatabaseHelper.getAllTrip()){
+//            res.add(a.getName());
+//        }
+//        return res;
+//    }
 
+    // View the trip_name through ViewHistory button
     public void viewName(){
+        // Get all the database of trips
         tripDatabaseHelper = new TripDatabaseHelper(this);
         final ArrayList<String> name = tripDatabaseHelper.getAllTripName();
         if(!name.isEmpty()){
             final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,name);
-
+            // Set the Adapter to list all the trip_name
             listView.setAdapter(arrayAdapter);
+            // Set the click action to the more details
             listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-
-//                    Toast.makeText(getApplicationContext(),
-//                            "Click ListItem Number " + position, Toast.LENGTH_LONG)
-//                            .show();
+                    // Pass the trip_name to ViewTripActivity
                     Object data_item = name.get(position);
                     Intent intent = new Intent(TripHistoryActivity.this,ViewTripActivity.class);
                     intent.putExtra("tripName", data_item.toString());

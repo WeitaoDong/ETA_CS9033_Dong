@@ -28,6 +28,7 @@ public class ViewTripActivity extends Activity {
 		super.onCreate(savedInstanceState);
         setTitle("View Trip");
         setContentView(R.layout.activity_view_trip);
+        // Judge whether it is from MainActivity or it is from TripHistoryActivity
         if(getIntent().hasExtra("tripName")){
             getViewTrip(getIntent());
         } else {
@@ -48,6 +49,7 @@ public class ViewTripActivity extends Activity {
 	 * is none.
 	 */
 	public Trip getTrip() {
+        // Get the database, and then set it to Trip
         tripDatabaseHelper = new TripDatabaseHelper(this);
         Cursor cursor = tripDatabaseHelper.getReadableDatabase().rawQuery("select * from trips order by _id desc",null);
         if(cursor.moveToFirst()) {
@@ -62,16 +64,15 @@ public class ViewTripActivity extends Activity {
 
 
     public void getViewTrip(Intent i) {
-        //TODO different between click on history
-//        Intent intent = getIntent();
+        // If it is from TripHistoryActivity then check the name from database, set them to Trip
         tripDatabaseHelper = new TripDatabaseHelper(this);
         Cursor cursor = tripDatabaseHelper.getReadableDatabase().rawQuery("select * from trips where name = ?; ",new String[]{i.getStringExtra("tripName")});
         if(cursor.moveToFirst()) {
             TextView name = (TextView) findViewById(R.id.name);
             name.setText(cursor.getString(1));
-            TextView friends = (TextView) findViewById(R.id.destination);
+            TextView friends = (TextView) findViewById(R.id.friends);
             friends.setText(cursor.getString(2));
-            TextView destination = (TextView) findViewById(R.id.friends);
+            TextView destination = (TextView) findViewById(R.id.destination);
             destination.setText(cursor.getString(3));
             TextView time = (TextView) findViewById(R.id.time);
             time.setText(cursor.getString(4));
@@ -87,13 +88,14 @@ public class ViewTripActivity extends Activity {
 	 * populate the View.
 	 */
 	public void viewTrip(Trip trip) {
+        // If it is from MainActivity then set them from the getTrip function's trip
         if(trip!=null) {
             TextView name1 = (TextView) findViewById(R.id.name);
             name1.setText(trip.getName());
-            TextView friends1 = (TextView) findViewById(R.id.destination);
+            TextView friends1 = (TextView) findViewById(R.id.friends);
             String friends2 =trip.ConvertFriendsToString(trip.getFriends());
             friends1.setText(friends2);
-            TextView destination1 = (TextView) findViewById(R.id.friends);
+            TextView destination1 = (TextView) findViewById(R.id.destination);
             destination1.setText(trip.getDestination());
             TextView time1 = (TextView) findViewById(R.id.time);
             time1.setText(trip.getTime());

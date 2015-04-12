@@ -19,4 +19,7 @@
     <string name="trip_history">View Trip history</string>
     <string name="plusFriends">add a friend from contact</string>
     <string name="checkPlace">check the place using API</string>
+    <string name="place">search place</string>
+    <string name="food">food</string>
+    <string name="search">Search</string>
 </resources>
