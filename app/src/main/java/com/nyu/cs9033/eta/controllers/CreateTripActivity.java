@@ -84,16 +84,14 @@ public class CreateTripActivity extends Activity {
 	public Trip createTrip() {
         trip_name = (EditText)findViewById(R.id.name);
         String Vtrip_name = trip_name.getText().toString().trim();
-        //todo how to deal with friends
         trip_destination = (EditText)findViewById(R.id.destination);
         String Vtrip_destination = trip_destination.getText().toString().trim();
         trip_time = (EditText)findViewById(R.id.time);
         String Vtrip_date = trip_time.getText().toString().trim();
-        if (TextUtils.isEmpty(Vtrip_name)|| trip.getFriends()==null || TextUtils.isEmpty(Vtrip_destination) || TextUtils.isEmpty(Vtrip_date) ) {
+        if (TextUtils.isEmpty(Vtrip_name)|| TextUtils.isEmpty(trip.ConvertFriendsToString(trip.getFriends())) || TextUtils.isEmpty(Vtrip_destination) || TextUtils.isEmpty(Vtrip_date) ) {
             Toast.makeText(this, "All fields must be filled.", Toast.LENGTH_LONG).show();
             return null;
         } else {
-            Log.e(Integer.toString(tripID),TAG+"4321");
             trip.setName(Vtrip_name);
             trip.setDestination(Vtrip_destination);
             trip.setTime(Vtrip_date);
@@ -164,15 +162,16 @@ public class CreateTripActivity extends Activity {
                     // Get first row (will be only row in most cases)
                     cursor.moveToFirst();
                     String person = cursor.getString(0);
-                    Log.e("4321"+TAG,person);
+                    // Display the name to the friends TextView
                     trip_friend = (TextView) findViewById(R.id.friends);
-                    Log.e("4321"+TAG,trip_friend.toString());
-                    if(trip.getFriends()==null) {
+                    if(trip.getFriends()==null||
+                            trip.ConvertFriendsToString(trip.getFriends()).length()==0) {
                         trip_friend.append(person);
                         trip.setFriends(person);
                     } else {
                         trip_friend.append(", ");
                         trip_friend.append(person);
+                        person=", "+person;
                         trip.setFriends(person);
                     }
 

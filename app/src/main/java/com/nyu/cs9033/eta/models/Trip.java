@@ -33,7 +33,7 @@ public class Trip implements Parcelable {
         return friends;
     }
     public void setFriends(String friends){
-            res.add(friends+", ");
+            res.add(friends);
         this.friends = res;
     }
     public void setPerson(String person){
