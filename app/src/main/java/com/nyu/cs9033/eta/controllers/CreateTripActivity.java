@@ -36,7 +36,7 @@ public class CreateTripActivity extends Activity {
 	
 	private static final String TAG = "CreateTripActivity";
     private int tripID;
-	private EditText trip_destination;
+	private TextView trip_destination;
     private EditText trip_time;
     private Date date;
     private EditText trip_name;
@@ -45,6 +45,8 @@ public class CreateTripActivity extends Activity {
     private SQLiteDatabase db;
     private TripDatabaseHelper tripDatabaseHelper;
     static final int REQUEST_DATA = 1;
+    static final int REQUEST_LOCATION = 2;
+    static final String uri_location = "location://com.example.nyu.hw3api";
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -54,6 +56,7 @@ public class CreateTripActivity extends Activity {
         Button CreateTrip = (Button) findViewById(R.id.create);
         Button CancelTrip = (Button) findViewById(R.id.cancel);
         Button AddFriends = (Button) findViewById(R.id.plusFriends);
+        Button CheckPlace = (Button) findViewById(R.id.checkPlace);
         CreateTrip.setOnClickListener(new View.OnClickListener(){
             public void onClick(View view){
                 trip = createTrip();
@@ -71,6 +74,18 @@ public class CreateTripActivity extends Activity {
                 startActivityForResult(intent,REQUEST_DATA);
             }
         });
+        CheckPlace.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                intent.setData(Uri.parse(uri_location));
+                intent.putExtra("searchVal","NYU Poly, New York::Chinese");
+                if(intent.resolveActivity(getPackageManager()) != null){
+                    startActivityForResult(intent,REQUEST_LOCATION);
+                }
+            }
+        });
+
 	}
 
 	
@@ -84,16 +99,17 @@ public class CreateTripActivity extends Activity {
 	public Trip createTrip() {
         trip_name = (EditText)findViewById(R.id.name);
         String Vtrip_name = trip_name.getText().toString().trim();
-        trip_destination = (EditText)findViewById(R.id.destination);
-        String Vtrip_destination = trip_destination.getText().toString().trim();
         trip_time = (EditText)findViewById(R.id.time);
         String Vtrip_date = trip_time.getText().toString().trim();
-        if (TextUtils.isEmpty(Vtrip_name)|| TextUtils.isEmpty(trip.ConvertFriendsToString(trip.getFriends())) || TextUtils.isEmpty(Vtrip_destination) || TextUtils.isEmpty(Vtrip_date) ) {
+        //TODO judge the Friends is empty
+        if (TextUtils.isEmpty(Vtrip_name)||
+                trip.getFriends()==null ||
+                trip.getDestination()==null ||
+                TextUtils.isEmpty(Vtrip_date) ) {
             Toast.makeText(this, "All fields must be filled.", Toast.LENGTH_LONG).show();
             return null;
         } else {
             trip.setName(Vtrip_name);
-            trip.setDestination(Vtrip_destination);
             trip.setTime(Vtrip_date);
             return trip;
         }
@@ -144,18 +160,18 @@ public class CreateTripActivity extends Activity {
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
         // TODO - fill in here
         if(data!=null) {
-            Log.e("4321"+TAG,"");
-            if (resultCode!=Activity.RESULT_OK) return;
-                Log.e("4321"+TAG,"4321");
-                Uri uri = data.getData();
-                String[] queryFields = new String[] {
-                        ContactsContract.Contacts.DISPLAY_NAME
-                };
+            Log.e("4321" +TAG,"4321 + " + requestCode);
+            switch (requestCode){
+                case REQUEST_DATA:
+                    Uri uri = data.getData();
+                    String[] queryFields = new String[]{
+                            ContactsContract.Contacts.DISPLAY_NAME
+                    };
 
                     Cursor cursor = getApplication().getContentResolver()
                             .query(uri, queryFields, null, null, null);
                     // check to make sure you got the results
-                    if(cursor.getCount()==0){
+                    if (cursor.getCount() == 0) {
                         cursor.close();
                         return;
                     }
@@ -164,18 +180,35 @@ public class CreateTripActivity extends Activity {
                     String person = cursor.getString(0);
                     // Display the name to the friends TextView
                     trip_friend = (TextView) findViewById(R.id.friends);
-                    if(trip.getFriends()==null||
-                            trip.ConvertFriendsToString(trip.getFriends()).length()==0) {
+                    if (trip.getFriends() == null ||
+                            trip.ConvertFriendsToString(trip.getFriends()).length() == 0) {
                         trip_friend.append(person);
                         trip.setFriends(person);
                     } else {
                         trip_friend.append(", ");
                         trip_friend.append(person);
-                        person=", "+person;
+                        person = ", " + person;
                         trip.setFriends(person);
                     }
 
                     cursor.close();
+                    break;
+                case REQUEST_LOCATION:
+                    Log.e("4321" + TAG, "4321 = " + requestCode);
+                    Bundle extras = data.getExtras();
+                    ArrayList<String> res = new ArrayList<String>(extras.getStringArrayList("retVal"));
+
+                    // check to make sure you got the results
+
+                    // Get first row (will be only row in most cases)
+
+                    String name = res.get(0);
+                    // Display the name to the friends TextView
+                    trip_destination = (TextView) findViewById(R.id.destination);
+                    trip_destination.append(name);
+                    trip.setDestination(name);
+                    break;
+            }
         }
     }
 }

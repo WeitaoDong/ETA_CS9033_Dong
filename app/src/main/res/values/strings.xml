@@ -18,4 +18,5 @@
     <string name="title_activity_create_trip">createTrip</string>
     <string name="trip_history">View Trip history</string>
     <string name="plusFriends">add a friend from contact</string>
+    <string name="checkPlace">check the place using API</string>
 </resources>
