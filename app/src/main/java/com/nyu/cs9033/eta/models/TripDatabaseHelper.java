@@ -67,7 +67,7 @@ public class TripDatabaseHelper extends SQLiteOpenHelper{
         //create table again
         onCreate(db);
     }
-
+    // Save the trip into the database
     public long insertTrip(Trip trip){
         ContentValues cv = new ContentValues();
         cv.put(COLUMN_TRIP_NAME,trip.getName());

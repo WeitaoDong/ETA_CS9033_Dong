@@ -37,17 +37,7 @@ public class ViewTripActivity extends Activity {
         }
 	}
 	
-	/**
-	 * Create a Trip object via the recent trip that
-	 * was passed to TripViewer via an Intent.
-	 * 
-	 * @param i The Intent that contains
-	 * the most recent trip data.
-	 * 
-	 * @return The Trip that was most recently
-	 * passed to TripViewer, or null if there
-	 * is none.
-	 */
+
 	public Trip getTrip() {
         // Get the database, and then set it to Trip
         tripDatabaseHelper = new TripDatabaseHelper(this);
@@ -62,7 +52,17 @@ public class ViewTripActivity extends Activity {
         return trip;
     }
 
-
+    /**
+     * Create a Trip object via the recent trip that
+     * was passed to TripViewer via an Intent.
+     *
+     * @param i The Intent that contains
+     * the most recent trip data.
+     *
+     * @return The Trip that was most recently
+     * passed to TripViewer, or null if there
+     * is none.
+     */
     public void getViewTrip(Intent i) {
         // If it is from TripHistoryActivity then check the name from database, set them to Trip
         tripDatabaseHelper = new TripDatabaseHelper(this);
@@ -108,6 +108,5 @@ public class ViewTripActivity extends Activity {
                             .setPositiveButton("Confirm",null).show();
         }
 
-		// TODO - fill in here
 	}
 }
