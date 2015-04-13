@@ -98,7 +98,6 @@ public class TripDatabaseHelper extends SQLiteOpenHelper{
 
     public ArrayList<String> getAllTripName() {
         ArrayList<String> tripList = new ArrayList<String>();
-        String selectQuery = "SELECT * FROM " + TABLE_TRIP;
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery("SELECT * FROM trips; ", null);
         if (cursor.moveToFirst()) {
