@@ -18,22 +18,24 @@ public class Trip implements Parcelable {
 	// Member fields should exist here, what else do you need for a trip?
 	// Please add additional fields
 	private String name;
-    private ArrayList<String> friends;
-    private Person person = new Person();
+    private ArrayList<Person> friends;
+    private Person person;
     private String destination;
     private String time;
     private int tripID;
-    private ArrayList<String> res = new ArrayList<String>();
+    private ArrayList<Person> res = new ArrayList<Person>();
 
     public String getName(){
         return name;
     }
     public void setName(String name){this.name = name;}
-    public ArrayList<String> getFriends(){
+    public ArrayList<Person> getFriends(){
         return friends;
     }
     public void setFriends(String friends){
-            res.add(friends);
+        Person person1 = new Person();
+        person1.setName(friends);
+            res.add(person1);
         this.friends = res;
     }
     public void setPerson(String person){
@@ -75,7 +77,7 @@ public class Trip implements Parcelable {
         tripID = p.readInt();
         name = p.readString();
         destination = p.readString();
-        friends = (ArrayList<String>)p.readSerializable();
+        friends = (ArrayList<Person>)p.readSerializable();
         time = p.readString();
 //        time = (Date)p.readSerializable();
 		// TODO - fill in here
@@ -89,7 +91,7 @@ public class Trip implements Parcelable {
 	 */
 
 
-	public Trip(String name,ArrayList<String> friends, String destination,String time) {
+	public Trip(String name,ArrayList<Person> friends, String destination,String time) {
 //        this.tripID = trip_ID;
         this.name = name;
         this.friends = friends;
@@ -125,20 +127,22 @@ public class Trip implements Parcelable {
 	 */
 
     // convert String to List
-    public ArrayList<String> ConvertFriendsToList(String friends1){
+    public ArrayList<Person> ConvertFriendsToList(String friends1){
         String[] vfriend = friends1.split(",");
-        ArrayList<String> vfriends = new ArrayList<String>();
+        ArrayList<Person> vfriends = new ArrayList<Person>();
         for(String v:vfriend){
-            vfriends.add(v);
+            person = new Person();
+            person.setName(v);
+            vfriends.add(person);
         }
         return vfriends;
     }
 
     //convert List to String
-    public String ConvertFriendsToString(ArrayList<String> friends){
+    public String ConvertFriendsToString(ArrayList<Person> friends){
         String friends2 ="";
         for(int i=0; i<friends.size();i++) {
-            friends2+=friends.get(i)+" ";
+            friends2+=friends.get(i).getName()+" ";
         }
         return friends2;
     }
