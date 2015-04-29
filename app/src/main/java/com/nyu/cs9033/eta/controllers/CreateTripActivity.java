@@ -23,6 +23,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -40,7 +41,7 @@ public class CreateTripActivity extends Activity {
     private EditText trip_time;
     private Date date;
     private EditText trip_name;
-    private Trip trip = new Trip();
+    private Trip trip;
     private TextView trip_friend;
     private SQLiteDatabase db;
     private TripDatabaseHelper tripDatabaseHelper;
@@ -60,6 +61,7 @@ public class CreateTripActivity extends Activity {
         Button SearchPlace = (Button) findViewById(R.id.Search);
         CreateTrip.setOnClickListener(new View.OnClickListener(){
             public void onClick(View view){
+                trip = new Trip();
                 trip = createTrip();
                 saveTrip(trip);
             }
@@ -118,9 +120,9 @@ public class CreateTripActivity extends Activity {
         String Vtrip_date = trip_time.getText().toString().trim();
         // Judge whether user has finished all the form or not
         if (TextUtils.isEmpty(Vtrip_name)||
-                trip.getFriends()==null ||
+                trip.getFriends() == null ||
                 trip.getDestination()==null ||
-                TextUtils.isEmpty(Vtrip_date) ) {
+                TextUtils.isEmpty(Vtrip_date)) {
             Toast.makeText(this, "All fields must be filled.", Toast.LENGTH_LONG).show();
             return null;
         } else {
@@ -194,7 +196,9 @@ public class CreateTripActivity extends Activity {
                     }
                     // Get first row (will be only row in most cases)
                     cursor.moveToFirst();
+                    Log.e(TAG+"abc",cursor.toString());
                     String person = cursor.getString(0);
+                    //todo save the number
                     // Display the name to the friends TextView
                     trip_friend = (TextView) findViewById(R.id.friends);
                     // Judge it whether the first one, if it is not add ", " before the name, then save it to Trip

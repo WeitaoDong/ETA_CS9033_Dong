@@ -12,6 +12,7 @@ public class Person implements Parcelable {
     private int id;
 	private String name;
     private String location;
+    private int phoneNumber;
     public int getId(){ return id;}
     public void setId(int id){ this.id = id;}
 	public String getName(){
@@ -49,7 +50,7 @@ public class Person implements Parcelable {
 	public Person(Parcel p) {
 		name = p.readString();
         location = p.readString();
-
+        phoneNumber = p.readInt();
 		// TODO - fill in here
 		
 	}
@@ -60,11 +61,10 @@ public class Person implements Parcelable {
 	 * @param name Add arbitrary number of arguments to
 	 * instantiate Person class based on member variables.
 	 */
-	public Person(String name,String location) {
+	public Person(String name,String location,int phoneNumber) {
 		this.name = name;
         this.location = location;
-
-		// TODO - fill in here, please note you must have more arguments here
+        this.phoneNumber = phoneNumber;
 	}
 
 	/**
@@ -84,7 +84,7 @@ public class Person implements Parcelable {
 	public void writeToParcel(Parcel dest, int flags) {
 		dest.writeString(name);
         dest.writeString(location);
-		// TODO - fill in here 	
+        dest.writeInt(phoneNumber);
 	}
 	
 	/**
