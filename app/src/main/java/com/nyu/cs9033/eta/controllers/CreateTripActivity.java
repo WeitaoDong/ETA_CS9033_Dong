@@ -92,7 +92,7 @@ public class CreateTripActivity extends Activity {
         AddFriends.setOnClickListener(new View.OnClickListener(){
             public void onClick(View view){
                 Intent intent = new Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI);
-                startActivityForResult(intent,REQUEST_DATA);
+                startActivityForResult(intent, REQUEST_DATA);
             }
         });
         CheckPlace.setOnClickListener(new View.OnClickListener() {
@@ -120,40 +120,22 @@ public class CreateTripActivity extends Activity {
                 }
             }
         });
-	}
-
-	
-	/**
-	 * This method should be used to
-	 * instantiate a Trip model object.
-	 * 
-	 * @return The Trip as represented
-	 * by the View.
-	 */
-	public Trip createTrip() {
-
-        // Get the Trip_name and time then save it to Trip
         c = Calendar.getInstance();
-        trip_name = (EditText)findViewById(R.id.name);
-        Log.e(TAG, trip_name.getText().toString());
-        String Vtrip_name = trip_name.getText().toString().trim();
+
         trip_date = (EditText)findViewById(R.id.create_trip_date);
         trip_date.setFocusable(false);
         trip_date.setClickable(true);
         trip_date.setInputType(InputType.TYPE_NULL);
-
         trip_date.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 new DatePickerDialog(CreateTripActivity.this,
                         new DatePickerDialog.OnDateSetListener() {
-
                             @Override
                             public void onDateSet(DatePicker dp, int year,
                                                   int month, int dayOfMonth) {
                                 trip_date.setText(year + "-" + (month + 1) + "-"
                                         + dayOfMonth);
-
                             }
                         }, c.get(Calendar.YEAR), c.get(Calendar.MONTH), c
                         .get(Calendar.DAY_OF_MONTH)).show();
@@ -181,7 +163,22 @@ public class CreateTripActivity extends Activity {
                         true).show();
             }
         });
+	}
 
+	
+	/**
+	 * This method should be used to
+	 * instantiate a Trip model object.
+	 * 
+	 * @return The Trip as represented
+	 * by the View.
+	 */
+	public Trip createTrip() {
+
+        // Get the Trip_name and time then save it to Trip
+        trip_name = (EditText)findViewById(R.id.name);
+        Log.e(TAG, trip_name.getText().toString());
+        String Vtrip_name = trip_name.getText().toString().trim();
         String Vtrip_date = " ";
         Vtrip_date = trip_date.getText().toString()+ " " +trip_time.getText().toString();
         Log.e(TAG + "123", Vtrip_date);
@@ -202,7 +199,6 @@ public class CreateTripActivity extends Activity {
             return trip;
         }
     }
-
 
 	/**
 	 * For HW2 you should treat this method as a 
