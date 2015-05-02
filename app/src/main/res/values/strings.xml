@@ -8,7 +8,10 @@
     <string name="destination">Enter the destination</string>
     <string name="friends">Enter friends</string>
     <string name="start_time">Enter the start time</string>
-    <string name="time">Enter join time</string>
+    <string name="tripTime">Enter join time</string>
+    <string name="tripDateHint">Input trip date</string>
+    <string name="tripTimeHint">Input trip time</string>
+    <string name="CreateTriptime">Trip time</string>
     <string name="create">Let us start</string>
     <string name="create_trip">Create the trip</string>
     <string name="view">Check the Trip</string>
@@ -22,4 +25,5 @@
     <string name="place">search place</string>
     <string name="food">food</string>
     <string name="search">Search</string>
+    <string name="tripDate">tripDate</string>
 </resources>

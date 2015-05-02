@@ -2,6 +2,7 @@ package com.nyu.cs9033.eta.models;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.util.Log;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -24,6 +25,11 @@ public class Trip implements Parcelable {
     private String time;
     private int tripID;
     private ArrayList<Person> res = new ArrayList<Person>();
+    private static final String JSON_ID = "id";
+    private static final String JSON_DESTINATION = "destination";
+    private static final String JSON_PEOPLE = "people";
+    private static final String JSON_DATE = "date";
+    private final static String TAG = "Trip";
 
     public String getName(){
         return name;
@@ -145,6 +151,17 @@ public class Trip implements Parcelable {
             friends2+=friends.get(i).getName()+" ";
         }
         return friends2;
+    }
+
+    public JSONObject toJSON() throws JSONException {
+        Log.i(TAG, "Trips write to json");
+        JSONObject json = new JSONObject();
+        json.put(JSON_ID, String.valueOf(tripID));
+        json.put(JSON_DESTINATION, destination);
+        json.put(JSON_PEOPLE, new JSONArray(friends));
+        json.put(JSON_DATE, time);
+
+        return json;
     }
 
     //initial Trip
