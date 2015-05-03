@@ -11,6 +11,8 @@ import android.content.ContentResolver;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -72,18 +74,18 @@ public class CreateTripActivity extends Activity {
         namelist = new ArrayList<String>();
         locationList = new ArrayList<String>();
 
-        Button CreateTrip = (Button) findViewById(R.id.create);
+//        Button CreateTrip = (Button) findViewById(R.id.create);
         Button CancelTrip = (Button) findViewById(R.id.cancel);
         Button AddFriends = (Button) findViewById(R.id.plusFriends);
         Button CheckPlace = (Button) findViewById(R.id.checkPlace);
         Button SearchPlace = (Button) findViewById(R.id.Search);
-        CreateTrip.setOnClickListener(new View.OnClickListener(){
-            public void onClick(View view){
+//        CreateTrip.setOnClickListener(new View.OnClickListener(){
+//            public void onClick(View view){
 //                trip = new Trip();
-                trip = createTrip();
-                saveTrip(trip);
-            }
-        });
+//                trip = createTrip();
+//                saveTrip(trip);
+//            }
+//        });
         CancelTrip.setOnClickListener(new View.OnClickListener(){
             public void onClick(View view){
                 cancelTrip();
@@ -163,6 +165,7 @@ public class CreateTripActivity extends Activity {
                         true).show();
             }
         });
+        ondone();
 	}
 
 	
@@ -181,7 +184,7 @@ public class CreateTripActivity extends Activity {
         String Vtrip_name = trip_name.getText().toString().trim();
         String Vtrip_date = " ";
         Vtrip_date = trip_date.getText().toString()+ " " +trip_time.getText().toString();
-        Log.e(TAG + "123", Vtrip_date);
+//        Log.e(TAG + "123", Vtrip_date);
 
         // Judge whether user has finished all the form or not
         if (TextUtils.isEmpty(Vtrip_name)||
@@ -245,10 +248,11 @@ public class CreateTripActivity extends Activity {
             jsonObject.accumulate("command", "CREATE_TRIP");
             JSONArray jarrayLocation = new JSONArray(locationList);
             jsonObject.accumulate("location", jarrayLocation);
+            // current time???
             Date date = new Date();
             jsonObject.accumulate("datetime", date.getTime());
             // todo trip.getName
-            JSONArray jarrayPeople = new JSONArray(trip.getName());
+            JSONArray jarrayPeople = new JSONArray(trip.ConverFriendsToList(trip.getFriends()));
             jsonObject.accumulate("people", jarrayPeople);
 
             // 4. convert JSONObject to JSON to String
@@ -272,7 +276,7 @@ public class CreateTripActivity extends Activity {
             // 9. receive response as inputStream
             inputStream = httpResponse.getEntity().getContent();
 
-            // 10. convert inputstream to string
+            // 10. convert inputStream to string
             if (inputStream != null)
                 result = convertInputStreamToString(inputStream);
             else
@@ -291,7 +295,7 @@ public class CreateTripActivity extends Activity {
             throws IOException {
         BufferedReader bufferedReader = new BufferedReader(
                 new InputStreamReader(inputStream));
-        String line = "";
+        String line;
         String result = "";
         while ((line = bufferedReader.readLine()) != null)
             result += line;
@@ -331,8 +335,8 @@ public class CreateTripActivity extends Activity {
     }
 
     public void ondone() {
-        final Button toMain = (Button) findViewById(R.id.create);
-        toMain.setOnClickListener(new View.OnClickListener() {
+        final Button Create = (Button) findViewById(R.id.create);
+        Create.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
 
                 trip_name = (EditText) findViewById(R.id.name);
@@ -342,23 +346,36 @@ public class CreateTripActivity extends Activity {
                 tripTime = trip_date.getText().toString() + " " + trip_time.getText().toString();
 
 
-                trip_name = (EditText) findViewById(R.id.name);
-                String startname = trip_name.getText().toString();
+//                trip_name = (EditText) findViewById(R.id.name);
+//                String tripName = trip_name.getText().toString();
 
 //                startname += " ";
 //                startname += partnername;
 //
 //                partnername = startname;
-//                // add post function here.
-//                //New part for geting trip_id from web server.
-//                if (isConnected()) {
-//                    new HttpAsyncTask()
-//                            .execute("http://cs9033-homework.appspot.com");
-//                } else {
+                // add post function here.
+                //New part for geting trip_id from web server.
+                if (isConnected()) {
+                    new HttpAsyncTask()
+                            .execute("http://cs9033-homework.appspot.com");
+                } else {
+                    Toast.makeText(getBaseContext(),
+                            "You are NOT connected!", Toast.LENGTH_SHORT)
+                            .show();
 //                    txtContacts.setText("You are NOT conncted");
-//                }
+                }
             }
         });
+    }
+
+    // This method is used to check the status of the network info.
+    public boolean isConnected() {
+        ConnectivityManager connMgr = (ConnectivityManager) getSystemService(Activity.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+        if (networkInfo != null && networkInfo.isConnected())
+            return true;
+        else
+            return false;
     }
 
     /**

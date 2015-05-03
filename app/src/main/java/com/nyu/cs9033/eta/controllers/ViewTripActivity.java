@@ -6,6 +6,7 @@ import com.nyu.cs9033.eta.models.TripDatabaseHelper;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -105,8 +106,14 @@ public class ViewTripActivity extends Activity {
                             .setIcon(R.drawable.ic_action_error)
                             .setTitle("Alert")
                             .setMessage("No trip found, please create trip!")
-                            .setPositiveButton("Confirm",null).show();
-        }
+                            .setPositiveButton("Confirm",new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
 
+                                    //Stop the activity
+                                    ViewTripActivity.this.finish();
+                                }
+                            }).show();
+        }
 	}
 }

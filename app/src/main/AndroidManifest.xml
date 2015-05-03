@@ -8,14 +8,18 @@
         android:minSdkVersion="11"
         android:targetSdkVersion="21" />
 
-    <android:uses-permission
-        android:name="android.permission.WRITE_EXTERNAL_STORAGE"
-        android:maxSdkVersion="21" />
-    <android:uses-permission android:name="android.permission.READ_PHONE_STATE" />
-    <android:uses-permission
-        android:name="android.permission.READ_EXTERNAL_STORAGE"
-        android:maxSdkVersion="21" />
+    <!--<android:uses-permission-->
+        <!--android:name="android.permission.WRITE_EXTERNAL_STORAGE"-->
+        <!--android:maxSdkVersion="21" />-->
+    <!--<android:uses-permission android:name="android.permission.READ_PHONE_STATE" />-->
+    <!--<android:uses-permission-->
+        <!--android:name="android.permission.READ_EXTERNAL_STORAGE"-->
+        <!--android:maxSdkVersion="21" />-->
     <uses-permission android:name="android.permission.READ_CONTACTS"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <!-- to get location using GPS -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
@@ -32,29 +36,30 @@
         </activity>
         <activity
             android:name=".controllers.CreateTripActivity"
-            android:label="@string/create" >
+            android:label="@string/create"
+            android:parentActivityName=".controllers.MainActivity">
         </activity>
         <activity
             android:name=".controllers.ViewTripActivity"
             android:label="@string/view"
             android:parentActivityName=".controllers.MainActivity" >
         </activity>
-        <activity
-            android:name=".ViewTrip"
-            android:label="@string/title_activity_view_trip"
-            android:parentActivityName=".controllers.MainActivity" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.nyu.cs9033.eta.controllers.MainActivity" />
-        </activity>
-        <activity
-            android:name=".createTrip"
-            android:label="@string/title_activity_create_trip"
-            android:parentActivityName=".controllers.MainActivity" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.nyu.cs9033.eta.controllers.MainActivity" />
-        </activity>
+        <!--<activity-->
+            <!--android:name=".ViewTripActivity"-->
+            <!--android:label="@string/title_activity_view_trip"-->
+            <!--android:parentActivityName=".controllers.MainActivity" >-->
+            <!--<meta-data-->
+                <!--android:name="android.support.PARENT_ACTIVITY"-->
+                <!--android:value="com.nyu.cs9033.eta.controllers.MainActivity" />-->
+        <!--</activity>-->
+        <!--<activity-->
+            <!--android:name=".createTrip"-->
+            <!--android:label="@string/title_activity_create_trip"-->
+            <!--android:parentActivityName=".controllers.MainActivity" >-->
+            <!--<meta-data-->
+                <!--android:name="android.support.PARENT_ACTIVITY"-->
+                <!--android:value="com.nyu.cs9033.eta.controllers.MainActivity" />-->
+        <!--</activity>-->
         <activity android:name=".controllers.TripHistoryActivity"
                   android:label="Check the history"
                   android:parentActivityName=".controllers.MainActivity"/>

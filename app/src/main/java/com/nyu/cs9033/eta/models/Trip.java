@@ -38,6 +38,7 @@ public class Trip implements Parcelable {
     public ArrayList<Person> getFriends(){
         return friends;
     }
+//    public
     public void setFriends(String friends){
         Person person1 = new Person();
         person1.setName(friends);
@@ -148,9 +149,19 @@ public class Trip implements Parcelable {
     public String ConvertFriendsToString(ArrayList<Person> friends){
         String friends2 ="";
         for(int i=0; i<friends.size();i++) {
-            friends2+=friends.get(i).getName()+" ";
+            if (friends2=="")
+                friends2+=friends.get(i).getName();
+            else friends2+=", "+friends.get(i).getName();
         }
         return friends2;
+    }
+
+    public ArrayList<String> ConverFriendsToList(ArrayList<Person> friends){
+        ArrayList<String> friendsName = new ArrayList<String>();
+        for (Person temp :friends){
+            friendsName.add(temp.getName());
+        }
+        return friendsName;
     }
 
     public JSONObject toJSON() throws JSONException {
