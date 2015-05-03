@@ -48,7 +48,7 @@ import java.util.Date;
 public class CreateTripActivity extends Activity {
 	
 	private static final String TAG = "CreateTripActivity";
-    private int tripID;
+    private long tripID;
 	private TextView trip_destination;
     private EditText trip_date;
     private EditText trip_time;
@@ -113,12 +113,16 @@ public class CreateTripActivity extends Activity {
                 Intent intent = new Intent(Intent.ACTION_VIEW);
                 intent.setData(Uri.parse(uri_location));
                 EditText place = (EditText) findViewById(R.id.place);
-                String place1 = place.getText().toString().trim();
+                String place1 = "";
+                place1 += place.getText().toString().trim();
                 EditText food = (EditText) findViewById(R.id.food);
-                String food1 = food.getText().toString().trim();
-                intent.putExtra("searchVal", place1 + "::" + food1);
-                if(intent.resolveActivity(getPackageManager())!=null){
-                    startActivityForResult(intent,REQUEST_LOCATION);
+                String food1 =  "";
+                food1 +=food.getText().toString().trim();
+                if (place1!=""&&food1!="") {
+                    intent.putExtra("searchVal", place1 + "::" + food1);
+                    if (intent.resolveActivity(getPackageManager()) != null) {
+                        startActivityForResult(intent, REQUEST_LOCATION);
+                    }
                 }
             }
         });
@@ -314,17 +318,16 @@ public class CreateTripActivity extends Activity {
         // onPostExecute displays the results of the AsyncTask.
         @Override
         protected void onPostExecute(String result) {
-
             try {
                 JSONObject json = new JSONObject(result);
                 int status = json.getInt("response_code");
                 if (status == 0) {
                     Toast.makeText(getBaseContext(),
-                            "Data received correctly!", Toast.LENGTH_LONG)
+                            "Data received correctly!", Toast.LENGTH_SHORT)
                             .show();
-                    tripID = Integer.valueOf(String.valueOf(json.getLong("trip_id")));
-                    Trip tmptrip = createTrip();
-                    saveTrip(tmptrip);
+                    tripID = json.getLong("trip_id");
+                    Trip tmpTrip = createTrip();
+                    saveTrip(tmpTrip);
                 }
             } catch (JSONException e) {
                 // TODO Auto-generated catch block
@@ -342,17 +345,14 @@ public class CreateTripActivity extends Activity {
                 trip_name = (EditText) findViewById(R.id.name);
 //                tripname = et1.getText().toString();
 
-
                 tripTime = trip_date.getText().toString() + " " + trip_time.getText().toString();
 
-
-//                trip_name = (EditText) findViewById(R.id.name);
-//                String tripName = trip_name.getText().toString();
-
-//                startname += " ";
-//                startname += partnername;
-//
-//                partnername = startname;
+                if (trip_name==null||
+                        trip_friend == null ||
+                        trip_destination == null ||
+                        tripTime.equals("") ) { // errors
+                    Toast.makeText(CreateTripActivity.this, "All fields must be filled.", Toast.LENGTH_SHORT).show();
+                }
                 // add post function here.
                 //New part for geting trip_id from web server.
                 if (isConnected()) {
@@ -362,7 +362,6 @@ public class CreateTripActivity extends Activity {
                     Toast.makeText(getBaseContext(),
                             "You are NOT connected!", Toast.LENGTH_SHORT)
                             .show();
-//                    txtContacts.setText("You are NOT conncted");
                 }
             }
         });
@@ -433,7 +432,6 @@ public class CreateTripActivity extends Activity {
                             trip_friend.append(name);
                         } else {
                             trip_friend.append(", "+name);
-//                            name = ", " + name;
                         }
                         namelist.add(name);
                         trip.setFriends(name);
@@ -452,10 +450,13 @@ public class CreateTripActivity extends Activity {
                     // Get the first String name
                     String Des_name = locationList.get(0);
 
+
                     // Display the name to the friends TextView
                     trip_destination = (TextView) findViewById(R.id.destination);
+                    if (trip_destination!=null) {
+                        trip_destination.setText("");
+                    }
                     trip_destination.append(Des_name);
-
                     // Save it to Trip
                     trip.setDestination(Des_name);
                     break;

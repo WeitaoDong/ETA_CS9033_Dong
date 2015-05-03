@@ -23,7 +23,7 @@ public class Trip implements Parcelable {
     private Person person;
     private String destination;
     private String time;
-    private int tripID;
+    private long tripID;
     private ArrayList<Person> res = new ArrayList<Person>();
     private static final String JSON_ID = "id";
     private static final String JSON_DESTINATION = "destination";
@@ -58,7 +58,7 @@ public class Trip implements Parcelable {
         return time;
     }
     public void setTime(String time){this.time = time;}
-    public int getTripID() { return tripID;}
+    public long getTripID() { return tripID;}
 
 	/**
 	 * Parcelable creator. Do not modify this function.
@@ -81,7 +81,7 @@ public class Trip implements Parcelable {
 	 * Model fields.
 	 */
 	public Trip(Parcel p) {
-        tripID = p.readInt();
+        tripID = p.readLong();
         name = p.readString();
         destination = p.readString();
         friends = (ArrayList<Person>)p.readSerializable();
@@ -121,7 +121,7 @@ public class Trip implements Parcelable {
 	 */
 	@Override
 	public void writeToParcel(Parcel dest, int flags) {
-        dest.writeInt(this.tripID);
+        dest.writeLong(this.tripID);
 		dest.writeString(this.name);
         dest.writeSerializable(this.friends);
         dest.writeString(this.destination);
