@@ -20,22 +20,31 @@ public final class R {
         public static final int ic_launcher=0x7f020002;
     }
     public static final class id {
+        public static final int AllFriends=0x7f080015;
+        public static final int Arrival=0x7f080019;
+        public static final int CurrentTrip=0x7f08001b;
+        public static final int Dest=0x7f080013;
         public static final int LinearLayout1=0x7f080000;
         public static final int Search=0x7f080008;
         public static final int TPtime=0x7f08000b;
-        public static final int action_settings=0x7f080013;
+        public static final int Time=0x7f080014;
+        public static final int TrackingInfo=0x7f080018;
+        public static final int TripName=0x7f080012;
+        public static final int Update=0x7f080017;
+        public static final int action_settings=0x7f08001c;
         public static final int cancel=0x7f08000e;
         public static final int checkPlace=0x7f080007;
         public static final int create=0x7f08000d;
         public static final int create_trip=0x7f080010;
         public static final int create_trip_date=0x7f08000a;
+        public static final int cur_trip=0x7f080016;
         public static final int destination=0x7f080006;
         public static final int food=0x7f080005;
         public static final int friends=0x7f080002;
         public static final int name=0x7f080001;
         public static final int place=0x7f080004;
         public static final int plusFriends=0x7f080003;
-        public static final int time=0x7f080012;
+        public static final int time=0x7f08001a;
         public static final int tripDate=0x7f080009;
         public static final int tripTime=0x7f08000c;
         public static final int trip_history=0x7f080011;
@@ -53,31 +62,37 @@ public final class R {
         public static final int menu_view_trip=0x7f070002;
     }
     public static final class string {
-        public static final int CreateTriptime=0x7f050000;
-        public static final int action_settings=0x7f050001;
-        public static final int app_name=0x7f050002;
-        public static final int cancel=0x7f050003;
-        public static final int checkPlace=0x7f050004;
-        public static final int create=0x7f050005;
-        public static final int create_trip=0x7f050006;
-        public static final int destination=0x7f050007;
-        public static final int done=0x7f050008;
-        public static final int food=0x7f050009;
-        public static final int friends=0x7f05000a;
-        public static final int name=0x7f05000b;
-        public static final int place=0x7f05000c;
-        public static final int plusFriends=0x7f05000d;
-        public static final int search=0x7f05000e;
-        public static final int start=0x7f05000f;
-        public static final int start_time=0x7f050010;
-        public static final int title_activity_create_trip=0x7f050011;
-        public static final int title_activity_view_trip=0x7f050012;
-        public static final int tripDate=0x7f050013;
-        public static final int tripDateHint=0x7f050014;
-        public static final int tripTime=0x7f050015;
-        public static final int tripTimeHint=0x7f050016;
-        public static final int trip_history=0x7f050017;
-        public static final int view=0x7f050018;
+        public static final int Arrival=0x7f050000;
+        public static final int CreateTriptime=0x7f050001;
+        public static final int Update=0x7f050002;
+        public static final int action_settings=0x7f050003;
+        public static final int app_name=0x7f050004;
+        public static final int cancel=0x7f050005;
+        public static final int checkPlace=0x7f050006;
+        public static final int create=0x7f050007;
+        public static final int create_trip=0x7f050008;
+        public static final int currentName=0x7f050009;
+        public static final int currentTrip=0x7f05000a;
+        public static final int destination=0x7f05000b;
+        public static final int done=0x7f05000c;
+        public static final int food=0x7f05000d;
+        public static final int friends=0x7f05000e;
+        public static final int name=0x7f05000f;
+        public static final int place=0x7f050010;
+        public static final int plusFriends=0x7f050011;
+        public static final int search=0x7f050012;
+        public static final int service_label=0x7f050013;
+        public static final int service_started=0x7f050014;
+        public static final int start=0x7f050015;
+        public static final int start_time=0x7f050016;
+        public static final int title_activity_create_trip=0x7f050017;
+        public static final int title_activity_view_trip=0x7f050018;
+        public static final int tripDate=0x7f050019;
+        public static final int tripDateHint=0x7f05001a;
+        public static final int tripTime=0x7f05001b;
+        public static final int tripTimeHint=0x7f05001c;
+        public static final int trip_history=0x7f05001d;
+        public static final int view=0x7f05001e;
     }
     public static final class style {
         /** 

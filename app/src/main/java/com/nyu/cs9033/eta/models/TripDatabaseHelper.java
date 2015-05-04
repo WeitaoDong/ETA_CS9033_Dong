@@ -43,7 +43,7 @@ public class TripDatabaseHelper extends SQLiteOpenHelper{
     public void onCreate(SQLiteDatabase db){
         // create trip table
         db.execSQL("create table if not exists " + TABLE_TRIP + "("
-                        + COLUMN_TRIP_ID + " integer primary key autoincrement, "
+                        + COLUMN_TRIP_ID + /*" integer primary key autoincrement, "*/ "long integer"
                         + COLUMN_TRIP_NAME+ " varchar(50), "
                         + COLUMN_FRIENDS + " varchar(50), "
                         + COLUMN_TRIP_DESTINATION + " varchar(200), "
@@ -70,6 +70,7 @@ public class TripDatabaseHelper extends SQLiteOpenHelper{
     // Save the trip into the database
     public long insertTrip(Trip trip){
         ContentValues cv = new ContentValues();
+        cv.put(COLUMN_TRIP_ID,trip.getTripID());
         cv.put(COLUMN_TRIP_NAME,trip.getName());
         cv.put(COLUMN_FRIENDS,trip.ConvertFriendsToString(trip.getFriends()));
         cv.put(COLUMN_TRIP_DESTINATION, trip.getDestination());

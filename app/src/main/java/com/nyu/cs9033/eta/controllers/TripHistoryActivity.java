@@ -45,15 +45,6 @@ public class TripHistoryActivity extends Activity {
         viewName();
     }
 
-//    public List<String> GetAllName(){
-//        tripDatabaseHelper = new TripDatabaseHelper(this);
-//        res = new ArrayList<String>();
-//        for(Trip a:tripDatabaseHelper.getAllTrip()){
-//            res.add(a.getName());
-//        }
-//        return res;
-//    }
-
     // View the trip_name through ViewHistory button
     public void viewName(){
         // Get all the database of trips

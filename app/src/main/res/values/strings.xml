@@ -2,6 +2,8 @@
 <resources>
 
     <string name="app_name">ETA</string>
+    <string name="service_started">Location Service started</string>
+    <string name="service_label">Location Service Label</string>
     <string name="action_settings">Settings</string>
     <string name="name">Enter a name</string>
     <string name="start">Enter the start location</string>
@@ -26,4 +28,9 @@
     <string name="food">food</string>
     <string name="search">Search</string>
     <string name="tripDate">tripDate</string>
+    <string name="currentTrip">set up the current Trip</string>
+    <!--<string name="AllFriends">current trip's friends</string>-->
+    <string name="currentName">current name</string>
+    <string name="Update">Update</string>
+    <string name="Arrival">Arrival</string>
 </resources>

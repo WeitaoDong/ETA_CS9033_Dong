@@ -59,6 +59,9 @@ public class Trip implements Parcelable {
     }
     public void setTime(String time){this.time = time;}
     public long getTripID() { return tripID;}
+    public void setTripID(long tripID) {
+        this.tripID = tripID;
+    }
 
 	/**
 	 * Parcelable creator. Do not modify this function.
@@ -156,7 +159,7 @@ public class Trip implements Parcelable {
         return friends2;
     }
 
-    public ArrayList<String> ConverFriendsToList(ArrayList<Person> friends){
+    public ArrayList<String> ConvertFriendsToList(ArrayList<Person> friends){
         ArrayList<String> friendsName = new ArrayList<String>();
         for (Person temp :friends){
             friendsName.add(temp.getName());

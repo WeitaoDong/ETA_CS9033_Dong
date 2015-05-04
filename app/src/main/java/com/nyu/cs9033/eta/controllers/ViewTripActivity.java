@@ -12,6 +12,8 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -36,6 +38,7 @@ public class ViewTripActivity extends Activity {
             Trip trip = getTrip();
             viewTrip(trip);
         }
+        startMainCurrentTrip();
 	}
 	
 
@@ -70,13 +73,21 @@ public class ViewTripActivity extends Activity {
         Cursor cursor = tripDatabaseHelper.getReadableDatabase().rawQuery("select * from trips where name = ?; ",new String[]{i.getStringExtra("tripName")});
         if(cursor.moveToFirst()) {
             TextView name = (TextView) findViewById(R.id.name);
-            name.setText(cursor.getString(1));
+            String TripName = cursor.getString(1);
+            name.setText(TripName);
+            trip.setName(TripName);
             TextView friends = (TextView) findViewById(R.id.friends);
-            friends.setText(cursor.getString(2));
+            String TripFriends = cursor.getString(2);
+            friends.setText(TripFriends);
+            trip.setFriends(TripFriends); // maybe has errors
             TextView destination = (TextView) findViewById(R.id.destination);
-            destination.setText(cursor.getString(3));
+            String TripDestination = cursor.getString(3);
+            destination.setText(TripDestination);
+            trip.setDestination(TripDestination);
             TextView time = (TextView) findViewById(R.id.time);
-            time.setText(cursor.getString(4));
+            String TripTime = cursor.getString(4);
+            time.setText(TripTime);
+            trip.setTime(TripTime);
         }
 
     }
@@ -116,4 +127,16 @@ public class ViewTripActivity extends Activity {
                             }).show();
         }
 	}
+
+    public void startMainCurrentTrip() {
+        final Button setCurrentTrip = (Button) findViewById(R.id.CurrentTrip);
+        setCurrentTrip.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Intent intentSetCurTrip = new Intent(ViewTripActivity.this,
+                        MainActivity.class);
+                intentSetCurTrip.putExtra("CurrentTrip", trip);
+                startActivity(intentSetCurTrip);
+            }
+        });
+    }
 }

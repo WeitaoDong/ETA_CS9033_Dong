@@ -169,7 +169,7 @@ public class CreateTripActivity extends Activity {
                         true).show();
             }
         });
-        ondone();
+        onDone();
 	}
 
 	
@@ -207,18 +207,7 @@ public class CreateTripActivity extends Activity {
         }
     }
 
-	/**
-	 * For HW2 you should treat this method as a 
-	 * way of sending the Trip data back to the
-	 * main Activity.
-	 * 
-	 * Note: If you call finish() here the Activity 
-	 * will end and pass an Intent back to the
-	 * previous Activity using setResult().
-	 * 
-	 * @return whether the Trip was successfully 
-	 * saved.
-	 */
+	// save the trip
 	public boolean saveTrip(Trip trip) {
         if(trip!=null) {
             //Get the database then insert trip finally return to MainActivity
@@ -235,8 +224,9 @@ public class CreateTripActivity extends Activity {
 
     // This method is used to post command and data to server, and receive
     public String POST(String url) {
-        InputStream inputStream = null;
+        InputStream inputStream;
         String result = "";
+        String json;
         try {
 
             // 1. create HttpClient
@@ -244,8 +234,6 @@ public class CreateTripActivity extends Activity {
 
             // 2. make POST request to the given URL
             HttpPost httpPost = new HttpPost(url);
-
-            String json = "";
 
             // 3. build jsonObject
             JSONObject jsonObject = new JSONObject();
@@ -256,7 +244,7 @@ public class CreateTripActivity extends Activity {
             Date date = new Date();
             jsonObject.accumulate("datetime", date.getTime());
             // todo trip.getName
-            JSONArray jarrayPeople = new JSONArray(trip.ConverFriendsToList(trip.getFriends()));
+            JSONArray jarrayPeople = new JSONArray(trip.ConvertFriendsToList(trip.getFriends()));
             jsonObject.accumulate("people", jarrayPeople);
 
             // 4. convert JSONObject to JSON to String
@@ -269,8 +257,7 @@ public class CreateTripActivity extends Activity {
             // 6. set httpPost Entity
             httpPost.setEntity(se);
 
-            // 7. Set some headers to inform server about the type of the
-            // content
+            // 7. Set some headers to inform server about the type of the content
             httpPost.setHeader("Accept", "application/json");
             httpPost.setHeader("Content-type", "application/json");
 
@@ -327,6 +314,7 @@ public class CreateTripActivity extends Activity {
                             .show();
                     tripID = json.getLong("trip_id");
                     Trip tmpTrip = createTrip();
+                    tmpTrip.setTripID(tripID);
                     saveTrip(tmpTrip);
                 }
             } catch (JSONException e) {
@@ -337,27 +325,26 @@ public class CreateTripActivity extends Activity {
         }
     }
 
-    public void ondone() {
+    public void onDone() {
         final Button Create = (Button) findViewById(R.id.create);
         Create.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
 
                 trip_name = (EditText) findViewById(R.id.name);
-//                tripname = et1.getText().toString();
 
                 tripTime = trip_date.getText().toString() + " " + trip_time.getText().toString();
 
-                if (trip_name==null||
-                        trip_friend == null ||
-                        trip_destination == null ||
-                        tripTime.equals("") ) { // errors
+                if (trip_name==null
+                        || trip_friend == null
+                        || trip_destination == null
+                        || tripTime.equals("") ) {
                     Toast.makeText(CreateTripActivity.this, "All fields must be filled.", Toast.LENGTH_SHORT).show();
                 }
                 // add post function here.
-                //New part for geting trip_id from web server.
+                //New part for getting trip_id from web server.
                 if (isConnected()) {
                     new HttpAsyncTask()
-                            .execute("http://cs9033-homework.appspot.com");
+                            .execute(GPS_Location.url);
                 } else {
                     Toast.makeText(getBaseContext(),
                             "You are NOT connected!", Toast.LENGTH_SHORT)
@@ -381,13 +368,6 @@ public class CreateTripActivity extends Activity {
 	 * This method should be used when a
 	 * user wants to cancel the creation of
 	 * a Trip.
-	 * 
-	 * Note: You most likely want to call this
-	 * if your activity dies during the process
-	 * of a trip creation or if a cancel/back
-	 * button event occurs. Should return to
-	 * the previous activity without a result
-	 * using finish() and setResult().
 	 */
 	public void cancelTrip() {
 //        Intent intent = new Intent(this,MainActivity.class);
@@ -417,16 +397,13 @@ public class CreateTripActivity extends Activity {
                     cursor.moveToFirst();
                     String name = cursor.getString(cursor
                             .getColumnIndexOrThrow(ContactsContract.Contacts.DISPLAY_NAME));
-                    // todo error
+                    int number = cursor.getInt(cursor.getColumnIndexOrThrow(ContactsContract.Contacts.HAS_PHONE_NUMBER));
                     if (namelist.contains(name)) {
                         Toast.makeText(CreateTripActivity.this, "You have added this person",Toast.LENGTH_SHORT).show();
                         return;
                     } else {
-
                         //todo save the number
-                        // Display the name to the friends TextView
-//trip.getFriends() == null ||
-//                        trip.ConvertFriendsToString(trip.getFriends()).length() == 0
+
                         // Judge it whether the first one, if it is not add ", " before the name, then save it to Trip
                         if (namelist.isEmpty()) {
                             trip_friend.append(name);
@@ -457,6 +434,7 @@ public class CreateTripActivity extends Activity {
                         trip_destination.setText("");
                     }
                     trip_destination.append(Des_name);
+
                     // Save it to Trip
                     trip.setDestination(Des_name);
                     break;
