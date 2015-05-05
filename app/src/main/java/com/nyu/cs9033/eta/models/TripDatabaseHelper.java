@@ -49,20 +49,20 @@ public class TripDatabaseHelper extends SQLiteOpenHelper{
                         + COLUMN_TRIP_DESTINATION + " varchar(200), "
                         + COLUMN_TRIP_DATE + " integer)");
         // create location table
-//        db.execSQL("CREATE TABLE IF NOT EXISTS " + TABLE_LOCATION + " ( "
-//                + COLUMN_LOC_TRIP_ID + " int references trip(_id), "
-//                + COLUMN_LOC_TIMESTAMP + " integer, "
-//                + COLUMN_LOC_LAT + " real, "
-//                + COLUMN_LOC_LONG + " real, "
-//                + COLUMN_LOC_ALT + " real, "
-//                + COLUMN_LOC_PROVIDER + " varchar(100))");
+        db.execSQL("CREATE TABLE IF NOT EXISTS " + TABLE_LOCATION + " ( "
+                + COLUMN_LOC_TRIP_ID + " int references trip(_id), "
+                + COLUMN_LOC_TIMESTAMP + " integer, "
+                + COLUMN_LOC_LAT + " real, "
+                + COLUMN_LOC_LONG + " real, "
+                + COLUMN_LOC_ALT + " real, "
+                + COLUMN_LOC_PROVIDER + " varchar(100))");
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion){
         //Drop older table if exists
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_TRIP);
-//        db.execSQL("DROP TABLE IF EXISTS " + TABLE_LOCATION);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_LOCATION);
 
         //create table again
         onCreate(db);
@@ -75,7 +75,7 @@ public class TripDatabaseHelper extends SQLiteOpenHelper{
         cv.put(COLUMN_FRIENDS,trip.ConvertFriendsToString(trip.getFriends()));
         cv.put(COLUMN_TRIP_DESTINATION, trip.getDestination());
         cv.put(COLUMN_TRIP_DATE,trip.getTime());
-        Log.e(TAG+"123",trip.ConvertFriendsToString(trip.getFriends())+trip.getName());
+//        Log.e(TAG+"123",trip.ConvertFriendsToString(trip.getFriends())+trip.getName());
         return getWritableDatabase().insert(TABLE_TRIP, null, cv);
     }
 

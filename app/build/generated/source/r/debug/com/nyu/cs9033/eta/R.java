@@ -21,17 +21,17 @@ public final class R {
     }
     public static final class id {
         public static final int AllFriends=0x7f080015;
-        public static final int Arrival=0x7f080019;
-        public static final int CurrentTrip=0x7f08001b;
+        public static final int Arrival=0x7f080018;
+        public static final int CurrentTrip=0x7f08001c;
         public static final int Dest=0x7f080013;
         public static final int LinearLayout1=0x7f080000;
         public static final int Search=0x7f080008;
         public static final int TPtime=0x7f08000b;
         public static final int Time=0x7f080014;
-        public static final int TrackingInfo=0x7f080018;
+        public static final int TrackingInfo=0x7f080019;
         public static final int TripName=0x7f080012;
         public static final int Update=0x7f080017;
-        public static final int action_settings=0x7f08001c;
+        public static final int action_settings=0x7f08001d;
         public static final int cancel=0x7f08000e;
         public static final int checkPlace=0x7f080007;
         public static final int create=0x7f08000d;
@@ -44,7 +44,8 @@ public final class R {
         public static final int name=0x7f080001;
         public static final int place=0x7f080004;
         public static final int plusFriends=0x7f080003;
-        public static final int time=0x7f08001a;
+        public static final int textArrival=0x7f08001a;
+        public static final int time=0x7f08001b;
         public static final int tripDate=0x7f080009;
         public static final int tripTime=0x7f08000c;
         public static final int trip_history=0x7f080011;

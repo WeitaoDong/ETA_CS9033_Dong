@@ -64,8 +64,7 @@
             android:name=".controllers.TestLocationService"
             android:enabled="true"
             android:label="My GPS_Location">
-            <!--android:process=":trip_background" -->
-
+            <!--android:process=":trip_background" >-->
         </service>
     </application>
 

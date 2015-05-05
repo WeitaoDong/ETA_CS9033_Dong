@@ -13,6 +13,8 @@ public class Person implements Parcelable {
 	private String name;
     private String location;
     private int phoneNumber;
+	private boolean isArrival = false;
+
     public int getId(){ return id;}
     public void setId(int id){ this.id = id;}
 	public String getName(){
@@ -27,6 +29,13 @@ public class Person implements Parcelable {
     public void setLocation(String location) {
         this.location = location;
     }
+	public boolean getArrival() {
+		return this.isArrival;
+	}
+	public void setArrival(boolean isArrival){
+		this.isArrival = isArrival;
+	}
+
 	/**
 	 * Parcelable creator. Do not modify this function.
 	 */

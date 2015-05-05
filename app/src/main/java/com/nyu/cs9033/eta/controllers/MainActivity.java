@@ -15,6 +15,7 @@ import android.os.RemoteException;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
@@ -40,7 +41,7 @@ public class MainActivity extends Activity {
 
     private TextView textView;
     private Person person;
-    Trip trip = new Trip();
+    Trip trip;
     private ArrayList<Trip> context;
     private ListView listView;
     private ArrayList<String> allFriends;
@@ -65,13 +66,20 @@ public class MainActivity extends Activity {
         Button view_history = (Button) findViewById(R.id.trip_history);
         Update = (Button) findViewById(R.id.Update);
         Arrival = (Button) findViewById(R.id.Arrival);
+        Arrival.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view){
+                common = (TextView) findViewById(R.id.textArrival);
+                common.setText("I am arrived.");
+            }
+        });
         create_trip.setOnClickListener(new View.OnClickListener(){
             public void onClick(View view){
                 startCreateTripActivity();
             }
         });
-        view_trip.setOnClickListener(new View.OnClickListener(){
-            public void onClick(View view){
+        view_trip.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
                 startViewTripActivity();
             }
         });
@@ -84,7 +92,8 @@ public class MainActivity extends Activity {
         startService(new Intent(this, TestLocationService.class));
         onRefresh();
         setCurrentTripInfo(getIntent());
-        CheckIfServiceIsRunning();
+        if (trip!=null)
+            CheckIfServiceIsRunning();
 	}
 
 	/**
@@ -119,7 +128,7 @@ public class MainActivity extends Activity {
                 case TestLocationService.MSG_FROM_SERVICE_UPLOAD_LOCATION:
                     // handle request from service
                     common = (TextView) findViewById(R.id.cur_trip);
-                    String str = msg.getData().getString("current_location");
+                    String str=msg.getData().getString("current_location");
                     common.setText(str);
                     break;
                 case TestLocationService.MSG_FROM_SERVICE_TRIP_STATUS:
@@ -142,9 +151,9 @@ public class MainActivity extends Activity {
             JSONArray time_left = jsonobject.getJSONArray("time_left");
             JSONArray people = jsonobject.getJSONArray("people");
             for (int i = 0; i < people.length(); i++) {
-                convert += people.getString(i) + " :\tdistance_left\t"
-                        + distance_left.getDouble(i) + "\ttime_left\t"
-                        + time_left.getInt(i) + "\n";
+                convert += people.getString(i) + " :\ndistance_left\t"
+                        + distance_left.getDouble(i)+(distance_left.getDouble(i)>1?" miles ":" mile ") + "\ntime_left\t"
+                        + time_left.getInt(i)/60 + " minutes"+ "\n";
             }
         } catch (JSONException e) {
             e.printStackTrace();
@@ -158,6 +167,9 @@ public class MainActivity extends Activity {
         if (trip != null) {
             currentName = (TextView) findViewById(R.id.TripName);
             currentName.append(trip.getName());
+//
+//            long TripId=trip.getTripID();
+//            currentName.append((String.valueOf(TripId)));
 
             destination = (TextView) findViewById(R.id.Dest);
             destination.append(trip.getDestination());
@@ -167,21 +179,22 @@ public class MainActivity extends Activity {
 
             listView = (ListView) findViewById(R.id.AllFriends);
             allFriends = trip.ConvertFriendsToList(trip.getFriends());
-
+            Log.e(TAG,allFriends.toString());
             final ArrayAdapter<String> Friends = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,allFriends);
             listView.setAdapter(Friends);
 
             // Set list height.
-            ViewGroup.LayoutParams params = listView.getLayoutParams();
-            params.height = allFriends.size()*200;
-            listView.setLayoutParams(params);
-            listView.requestLayout();
+//            ViewGroup.LayoutParams params = listView.getLayoutParams();
+//            params.height = allFriends.size()*200;
+//            listView.setLayoutParams(params);
+//            listView.requestLayout();
 
             Update.setVisibility(View.VISIBLE);
             Arrival.setVisibility(View.VISIBLE);
 
         }
     }
+
 
     private void onRefresh() {
 
@@ -235,6 +248,7 @@ public class MainActivity extends Activity {
                 msg.replyTo = mMessenger;
             try {
                 Bundle b = new Bundle();
+
                 b.putLong("trip_id", trip.getTripID());
                 msg.setData(b);
                 mService.send(msg);

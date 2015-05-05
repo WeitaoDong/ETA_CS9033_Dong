@@ -69,7 +69,7 @@ public class TestLocationService extends Service implements LocationListener {
     Location location; // location
 
     // The minimum distance to change Updates in meters
-    private static final long MIN_DISTANCE_CHANGE_FOR_UPDATES = 10; // 10 meters
+    private static final long MIN_DISTANCE_CHANGE_FOR_UPDATES = 20; // 10 meters
 
     // The minimum time between updates in milliseconds
     private static final long MIN_TIME_BW_UPDATES = 1000 * 60 * 2;// 1000 * 60 *
@@ -157,7 +157,9 @@ public class TestLocationService extends Service implements LocationListener {
         String currentDateandTime = java.text.DateFormat.getDateTimeInstance().format(Calendar.getInstance().getTime());
 
         getLocation();
-        String result = POST(url, getUploadLocJson());
+        JSONObject tmp = getUploadLocJson();
+        Log.e(TAG+"Load", tmp.toString());
+        String result = POST(this.url, getUploadLocJson());
         JSONObject json = new JSONObject(result);
         int status = json.getInt("response_code");
         if (status == 0) {
@@ -413,10 +415,9 @@ public class TestLocationService extends Service implements LocationListener {
 
     // This method is used to post command and data to server, and receive
     public String POST(String url, JSONObject jsonObject) {
-        InputStream inputStream = null;
+        InputStream inputStream;
         String result = "";
-        String json = "";
-        ;
+        String json;
         try {
             // 1. create HttpClient
             HttpClient httpclient = new DefaultHttpClient();
