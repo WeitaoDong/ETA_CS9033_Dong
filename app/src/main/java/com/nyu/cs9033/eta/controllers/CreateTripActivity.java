@@ -11,6 +11,7 @@ import android.content.ContentResolver;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.location.Location;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
@@ -60,6 +61,8 @@ public class CreateTripActivity extends Activity {
     private TextView trip_friend;
     private SQLiteDatabase db;
     private TripDatabaseHelper tripDatabaseHelper;
+    String Des_name;
+    String address;
     static final int REQUEST_DATA = 1;
     static final int REQUEST_LOCATION = 2;
     static final String uri_location = "location://com.example.nyu.hw3api";
@@ -214,6 +217,13 @@ public class CreateTripActivity extends Activity {
             tripDatabaseHelper = new TripDatabaseHelper(this);
             tripDatabaseHelper.insertTrip(trip);
             Toast.makeText(CreateTripActivity.this, "Create a trip successfully!",Toast.LENGTH_SHORT).show();
+
+
+            tripDatabaseHelper = new TripDatabaseHelper(this);
+            tripDatabaseHelper.insertLocation(tripID, Des_name, address, Double.parseDouble(locationList.get(2)), Double.parseDouble(locationList.get(3)));
+            Toast.makeText(CreateTripActivity.this, "Save place successfully!",Toast.LENGTH_SHORT).show();
+
+
             finish();
             return true;
         } else {
@@ -313,7 +323,7 @@ public class CreateTripActivity extends Activity {
                             "Data received correctly!", Toast.LENGTH_SHORT)
                             .show();
                     tripID = json.getLong("trip_id");
-                    Log.e(TAG+"_id= ", String.valueOf(tripID));
+//                    Log.e(TAG+"_id= ", String.valueOf(tripID));
                     trip = createTrip();
                     trip.setTripID(tripID);
                     saveTrip(trip);
@@ -426,7 +436,13 @@ public class CreateTripActivity extends Activity {
                     locationList = extras.getStringArrayList("retVal");
 
                     // Get the first String name
-                    String Des_name = locationList.get(0);
+                    Des_name = locationList.get(0);
+                    address = locationList.get(1);
+//
+//                    Location location = null;
+//                    location.setProvider(address);
+//                    location.setLatitude(Double.parseDouble(locationList.get(2)));
+//                    location.setLongitude(Double.parseDouble(locationList.get(3)));
 
 
                     // Display the name to the friends TextView

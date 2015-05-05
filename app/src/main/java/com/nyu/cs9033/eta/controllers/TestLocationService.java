@@ -157,9 +157,10 @@ public class TestLocationService extends Service implements LocationListener {
         String currentDateandTime = java.text.DateFormat.getDateTimeInstance().format(Calendar.getInstance().getTime());
 
         getLocation();
-        JSONObject tmp = getUploadLocJson();
-        Log.e(TAG+"Load", tmp.toString());
+//        JSONObject tmp = getUploadLocJson();
+//        Log.e(TAG+"Load", tmp.toString());
         String result = POST(this.url, getUploadLocJson());
+//        Log.e(TAG,result);
         JSONObject json = new JSONObject(result);
         int status = json.getInt("response_code");
         if (status == 0) {
@@ -445,7 +446,8 @@ public class TestLocationService extends Service implements LocationListener {
             else
                 result = "Did not work!";
         } catch (Exception e) {
-            Log.d(TAG, e.getLocalizedMessage());
+            if (e.getLocalizedMessage()!=null)
+                Log.d(TAG, e.getLocalizedMessage());
         }
         // 11. return result
         return result;

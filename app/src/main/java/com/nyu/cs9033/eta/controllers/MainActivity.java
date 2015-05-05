@@ -48,6 +48,7 @@ public class MainActivity extends Activity {
     private TextView currentName;
     private TextView destination;
     private TextView tripTime;
+    private TextView Friends;
     private TextView common;
     private Button Update,Arrival;
     private Messenger mService = null;
@@ -167,9 +168,6 @@ public class MainActivity extends Activity {
         if (trip != null) {
             currentName = (TextView) findViewById(R.id.TripName);
             currentName.append(trip.getName());
-//
-//            long TripId=trip.getTripID();
-//            currentName.append((String.valueOf(TripId)));
 
             destination = (TextView) findViewById(R.id.Dest);
             destination.append(trip.getDestination());
@@ -177,11 +175,15 @@ public class MainActivity extends Activity {
             tripTime = (TextView) findViewById(R.id.Time);
             tripTime.append(trip.getTime());
 
-            listView = (ListView) findViewById(R.id.AllFriends);
-            allFriends = trip.ConvertFriendsToList(trip.getFriends());
-            Log.e(TAG,allFriends.toString());
-            final ArrayAdapter<String> Friends = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,allFriends);
-            listView.setAdapter(Friends);
+//            listView = (ListView) findViewById(R.id.AllFriends);
+//            allFriends = trip.ConvertFriendsToList(trip.getFriends());
+//            Log.e(TAG,allFriends.toString());
+//            final ArrayAdapter<String> Friends = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,allFriends);
+//            listView.setAdapter(Friends);
+            String friendsToString = trip.ConvertFriendsToString(trip.getFriends());
+            Friends = (TextView) findViewById(R.id.AllFriends);
+            Friends.setText(friendsToString);
+
 
             // Set list height.
 //            ViewGroup.LayoutParams params = listView.getLayoutParams();

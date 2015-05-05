@@ -9,6 +9,7 @@ import android.location.Location;
 import android.util.Log;
 
 import java.lang.reflect.Array;
+import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,11 +30,12 @@ public class TripDatabaseHelper extends SQLiteOpenHelper{
 
     private static final String TABLE_LOCATION = "location";
     private static final String COLUMN_LOC_TRIP_ID = " trip_id";
+    private static final String COLUMN_LOC_NAME = " trip_name";
     private static final String COLUMN_LOC_TIMESTAMP = "timestamp";
     private static final String COLUMN_LOC_LAT = "latitude";
     private static final String COLUMN_LOC_LONG = "longitude";
     private static final String COLUMN_LOC_ALT = "altitude";
-    private static final String COLUMN_LOC_PROVIDER = "provider";
+    private static final String COLUMN_LOC_ADDRESS = "address";
 
 
     public TripDatabaseHelper(Context context){
@@ -51,11 +53,10 @@ public class TripDatabaseHelper extends SQLiteOpenHelper{
         // create location table
         db.execSQL("CREATE TABLE IF NOT EXISTS " + TABLE_LOCATION + " ( "
                 + COLUMN_LOC_TRIP_ID + " int references trip(_id), "
-                + COLUMN_LOC_TIMESTAMP + " integer, "
+                + COLUMN_LOC_NAME + " varchar(100), "
                 + COLUMN_LOC_LAT + " real, "
                 + COLUMN_LOC_LONG + " real, "
-                + COLUMN_LOC_ALT + " real, "
-                + COLUMN_LOC_PROVIDER + " varchar(100))");
+                + COLUMN_LOC_ADDRESS + " varchar(100))");
     }
 
     @Override
@@ -109,14 +110,14 @@ public class TripDatabaseHelper extends SQLiteOpenHelper{
         return tripList;
     }
 
-    public long insertLocation(long tripId, Location location) {
+    public long insertLocation(long tripId, String name, String address, double latitude, double longitude) {
         ContentValues cv = new ContentValues();
         cv.put(COLUMN_LOC_TRIP_ID, tripId);
-        cv.put(COLUMN_LOC_TIMESTAMP,location.getTime());
-        cv.put(COLUMN_LOC_LAT,location.getLatitude());
-        cv.put(COLUMN_LOC_LONG,location.getLongitude());
-        cv.put(COLUMN_LOC_ALT,location.getAltitude());
-        cv.put(COLUMN_LOC_PROVIDER,location.getProvider());
+        cv.put(COLUMN_LOC_NAME, name);
+        cv.put(COLUMN_LOC_LAT,latitude);
+        cv.put(COLUMN_LOC_LONG,longitude);
+//        cv.put(COLUMN_LOC_ALT,location.getAltitude());
+        cv.put(COLUMN_LOC_ADDRESS,address);
         // return id of new location
         return getWritableDatabase().insert(TABLE_LOCATION,null,cv);
     }

@@ -74,25 +74,27 @@
                 android:id="@+id/Time"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="0dp"
                 android:textSize="18sp"
                 android:text="Gathering time: \n"/>
-        </LinearLayout>
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:layout_marginLeft="20dp"
                 android:textSize="20sp"
                 android:text="Friends: "/>
-            <ListView
+            <TextView
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/AllFriends"
-                android:textSize="19sp"
-                android:layout_marginLeft="18dp"
-                android:choiceMode="singleChoice">
-            </ListView>
+                android:textSize="19sp"/>
+        </LinearLayout>
+            <!--<ListView-->
+                <!--android:layout_width="fill_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:id="@+id/AllFriends"-->
+                <!--android:textSize="19sp"-->
+                <!--android:layout_marginLeft="18dp"-->
+                <!--android:choiceMode="singleChoice">-->
+            <!--</ListView>-->
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
