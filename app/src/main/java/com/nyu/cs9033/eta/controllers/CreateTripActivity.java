@@ -345,7 +345,7 @@ public class CreateTripActivity extends Activity {
                 //New part for getting trip_id from web server.
                 if (isConnected()) {
                     new HttpAsyncTask()
-                            .execute(GPS_Location.url);
+                            .execute("http://cs9033-homework.appspot.com");
                 } else {
                     Toast.makeText(getBaseContext(),
                             "You are NOT connected!", Toast.LENGTH_SHORT)

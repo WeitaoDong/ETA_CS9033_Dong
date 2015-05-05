@@ -27,34 +27,10 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.StringEntity;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Context;
-import android.content.Intent;
 import android.content.ServiceConnection;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
-import android.os.AsyncTask;
-import android.os.Bundle;
-import android.os.Handler;
 import android.os.IBinder;
-import android.os.Message;
-import android.os.Messenger;
-import android.os.RemoteException;
-import android.util.Log;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.Button;
-import android.widget.TextView;
 
 
 public class MainActivity extends Activity {
@@ -64,7 +40,7 @@ public class MainActivity extends Activity {
 
     private TextView textView;
     private Person person;
-    Trip trip;
+    Trip trip = new Trip();
     private ArrayList<Trip> context;
     private ListView listView;
     private ArrayList<String> allFriends;
@@ -74,7 +50,7 @@ public class MainActivity extends Activity {
     private TextView common;
     private Button Update,Arrival;
     private Messenger mService = null;
-    boolean isBound = false;
+    boolean isBound;
 
     /** Flag indicating whether we have called bind on the service. */
     final Messenger mMessenger = new Messenger(new IncomingHandler());
@@ -105,7 +81,7 @@ public class MainActivity extends Activity {
             }
         });
 
-        startService(new Intent(MainActivity.this, GPS_Location.class));
+        startService(new Intent(this, TestLocationService.class));
         onRefresh();
         setCurrentTripInfo(getIntent());
         CheckIfServiceIsRunning();
@@ -140,13 +116,13 @@ public class MainActivity extends Activity {
         @Override
         public void handleMessage(Message msg) {
             switch (msg.what) {
-                case GPS_Location.MSG_FROM_SERVICE_UPLOAD_LOCATION:
+                case TestLocationService.MSG_FROM_SERVICE_UPLOAD_LOCATION:
                     // handle request from service
                     common = (TextView) findViewById(R.id.cur_trip);
                     String str = msg.getData().getString("current_location");
                     common.setText(str);
                     break;
-                case GPS_Location.MSG_FROM_SERVICE_TRIP_STATUS:
+                case TestLocationService.MSG_FROM_SERVICE_TRIP_STATUS:
                     common = (TextView) findViewById(R.id.TrackingInfo);
                     String result = msg.getData().getString("trip_status");
                     common.setText(parseTripStatus(result));
@@ -216,7 +192,7 @@ public class MainActivity extends Activity {
             public void onClick(View arg0) {
                 // check if GPS enabled
                 Message msg = Message.obtain(null,
-                        GPS_Location.MSG_FROM_ACTIVITY);
+                        TestLocationService.MSG_FROM_ACTIVITY);
                 msg.replyTo = mMessenger;
                 Bundle b = new Bundle();
                 b.putLong("trip_id", trip.getTripID());
@@ -232,7 +208,7 @@ public class MainActivity extends Activity {
 
     private boolean CheckIfServiceIsRunning() {
         // If the service is running when the activity starts, we want to automatically bind to it.
-        if (GPS_Location.isRunning()) {
+        if (TestLocationService.isRunning()) {
             doBindService();
             return true;
         } else return false;
@@ -241,7 +217,7 @@ public class MainActivity extends Activity {
         // Establish a connection with the service. We use an explicit
         // class name because there is no reason to be able to let other
         // applications interact with our component.
-        bindService(new Intent(MainActivity.this, GPS_Location.class),
+        bindService(new Intent(this, TestLocationService.class),
                 mConnection, // ServiceConnection object
                 Context.BIND_AUTO_CREATE); // Create service if not
 
@@ -255,7 +231,7 @@ public class MainActivity extends Activity {
             mService = new Messenger(service);
 
                 Message msg = Message.obtain(null,
-                        GPS_Location.MSG_REGISTER_CLIENT);
+                        TestLocationService.MSG_REGISTER_CLIENT);
                 msg.replyTo = mMessenger;
             try {
                 Bundle b = new Bundle();
@@ -280,7 +256,7 @@ public class MainActivity extends Activity {
             // If we registered with the service, then now is the time to unregister.
             if (mService != null) {
                 try {
-                    Message msg = Message.obtain(null, GPS_Location.MSG_UNREGISTER_CLIENT);
+                    Message msg = Message.obtain(null, TestLocationService.MSG_UNREGISTER_CLIENT);
                     msg.replyTo = mMessenger;
                     mService.send(msg);
                 } catch (RemoteException e) {
@@ -299,7 +275,7 @@ public class MainActivity extends Activity {
         super.onDestroy();
         try {
             doUnbindService();
-            stopService(new Intent(MainActivity.this, GPS_Location.class));
+            stopService(new Intent(MainActivity.this, TestLocationService.class));
         } catch (Throwable t) {
             Log.e("MainActivity", "Failed to unbind from the service", t);
         }

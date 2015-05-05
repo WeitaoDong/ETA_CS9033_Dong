@@ -61,10 +61,11 @@
             android:label="Check the history"
             android:parentActivityName=".controllers.MainActivity"/>
         <service
-            android:name=".controllers.GPS_Location"
+            android:name=".controllers.TestLocationService"
             android:enabled="true"
-            android:label="My GPS_Location"
-            android:process=":trip_background" >
+            android:label="My GPS_Location">
+            <!--android:process=":trip_background" -->
+
         </service>
     </application>
 
