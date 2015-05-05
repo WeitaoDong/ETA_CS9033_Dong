@@ -48,6 +48,7 @@ public class ViewTripActivity extends Activity {
         Cursor cursor = tripDatabaseHelper.getReadableDatabase().rawQuery("select * from trips order by _id desc",null);
         if(cursor.moveToFirst()) {
             trip = new Trip();
+            trip.setTripID(cursor.getLong(0));
             trip.setName(cursor.getString(1));
             trip.setFriends(cursor.getString(2));
             trip.setDestination(cursor.getString(3));
@@ -72,6 +73,8 @@ public class ViewTripActivity extends Activity {
         tripDatabaseHelper = new TripDatabaseHelper(this);
         Cursor cursor = tripDatabaseHelper.getReadableDatabase().rawQuery("select * from trips where name = ?; ",new String[]{i.getStringExtra("tripName")});
         if(cursor.moveToFirst()) {
+            trip = new Trip();
+            trip.setTripID(cursor.getLong(0));
             TextView name = (TextView) findViewById(R.id.name);
             String TripName = cursor.getString(1);
             name.setText(TripName);
@@ -111,7 +114,6 @@ public class ViewTripActivity extends Activity {
             destination1.setText(trip.getDestination());
             TextView time1 = (TextView) findViewById(R.id.time);
             time1.setText(trip.getTime());
-
         } else {
             new AlertDialog.Builder(this)
                             .setIcon(R.drawable.ic_action_error)
@@ -138,5 +140,6 @@ public class ViewTripActivity extends Activity {
                 startActivity(intentSetCurTrip);
             }
         });
+//        Log.e(TAG+"view",trip.getDestination()+" / "+trip.getFriends().toString());
     }
 }

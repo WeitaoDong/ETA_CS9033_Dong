@@ -28,7 +28,7 @@
     <string name="food">food</string>
     <string name="search">Search</string>
     <string name="tripDate">tripDate</string>
-    <string name="currentTrip">set up the current Trip</string>
+    <string name="currentTrip">Start this trip!</string>
     <!--<string name="AllFriends">current trip's friends</string>-->
     <string name="currentName">current name</string>
     <string name="Update">Update</string>

@@ -5,6 +5,7 @@ import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
 import android.location.Location;
 import android.location.LocationListener;
@@ -29,7 +30,10 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Timer;
@@ -53,8 +57,8 @@ public class GPS_Location extends Service implements LocationListener {
     protected static boolean Start = false;
     final Messenger mMessenger = new Messenger(new IncomingHandler());
     public static String url = "http://cs9033-homework.appspot.com";
-    private static double latitude = 0;
-    private static double longitude = 0;
+    private  double latitude = 0;
+    private  double longitude = 0;
     boolean isGpsWork = false;
     boolean isNetwork = false;
     boolean GetLocation = false;
@@ -69,7 +73,9 @@ public class GPS_Location extends Service implements LocationListener {
     Timer timer = new Timer();
     Timer timer2 = new Timer();
 
-    public GPS_Location(){}
+    public GPS_Location(){
+
+    }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
@@ -84,13 +90,10 @@ public class GPS_Location extends Service implements LocationListener {
         Start = true;
         showNotification();
 
-        Log.i(TAG, "Service Started.");
+        Log.e(TAG, "Service Started.");
     }
 
-
-
-    // This method is used to show your service status on the top corner of
-    // screen
+    // This method is used to show your service status on the top corner of screen
     private void showNotification() {
         notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
 
@@ -171,7 +174,7 @@ public class GPS_Location extends Service implements LocationListener {
     }
 
     private void timerRunTask() throws JSONException {
-        String currentDateandTime = java.text.DateFormat.getDateTimeInstance().format(Calendar.getInstance().getTime());
+        String currentDateAndTime = java.text.DateFormat.getDateTimeInstance().format(Calendar.getInstance().getTime());
 
         getLocation();
         String result = POST(url, getUploadLocJson());
@@ -183,7 +186,7 @@ public class GPS_Location extends Service implements LocationListener {
                     + "\nLongitude: "
                     + String.valueOf(getLongitude() + "\nUpdate Times:\t"
                     + String.valueOf(count++) + "\nUpdate Datetime: \t"
-                    + currentDateandTime + "\nCurrent trip ID is:\t"
+                    + currentDateAndTime + "\nCurrent trip ID is:\t"
                     + String.valueOf(tripID));
             Message msg = Message
                     .obtain(null, MSG_FROM_SERVICE_UPLOAD_LOCATION);
@@ -237,8 +240,11 @@ public class GPS_Location extends Service implements LocationListener {
         return longitude;
     }
 
+    public boolean GetLocation() {
+        return this.GetLocation;
+    }
 
-    private static JSONObject getUploadLocJson() {
+    private JSONObject getUploadLocJson() {
         JSONObject jsonObject = new JSONObject();
         try {
             jsonObject.accumulate("command", "UPDATE_LOCATION");
@@ -292,7 +298,7 @@ public class GPS_Location extends Service implements LocationListener {
             inputStream = httpResponse.getEntity().getContent();
             // 10. convert inputstream to string
             if (inputStream != null)
-                result = CreateTripActivity.convertInputStreamToString(inputStream);
+                result = convertInputStreamToString(inputStream);
             else
                 result = "Did not work!";
         } catch (Exception e) {
@@ -302,10 +308,23 @@ public class GPS_Location extends Service implements LocationListener {
         return result;
     }
 
+    // This method is used to change the received json object to json string.
+    public static String convertInputStreamToString(InputStream inputStream)
+            throws IOException {
+        BufferedReader bufferedReader = new BufferedReader(
+                new InputStreamReader(inputStream));
+        String line = "";
+        String result = "";
+        while ((line = bufferedReader.readLine()) != null)
+            result += line;
+
+        inputStream.close();
+        return result;
+    }
+
     public Location getLocation() {
         try {
-            locationManager = (LocationManager) this
-                    .getSystemService(LOCATION_SERVICE);
+            locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
 
             // getting GPS status
             isGpsWork = locationManager
@@ -362,8 +381,7 @@ public class GPS_Location extends Service implements LocationListener {
         return location;
     }
 
-    class IncomingHandler extends Handler { // Handler of incoming messages from
-        // clients.
+    class IncomingHandler extends Handler { // Handler of incoming messages from clients.
         @Override
         public void handleMessage(Message msg) {
             switch (msg.what) {
@@ -376,13 +394,13 @@ public class GPS_Location extends Service implements LocationListener {
                             onTimerTick();
                         }
                     }, 0);
-
                     break;
                 case MSG_UNREGISTER_CLIENT:
                     messengerClient = null;
                     break;
                 case MSG_FROM_ACTIVITY:
                     tripID = msg.getData().getLong("trip_id");
+                    Log.e(TAG+"1234",String.valueOf(tripID));
                     onTimerTick();
                     timer2.schedule(new TimerTask() {
                         public void run() {
@@ -411,5 +429,8 @@ public class GPS_Location extends Service implements LocationListener {
         if (locationManager != null) {
             locationManager.removeUpdates(GPS_Location.this);
         }
+    }
+    public static boolean isRunning() {
+        return Start;
     }
 }

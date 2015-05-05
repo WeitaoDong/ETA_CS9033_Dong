@@ -224,7 +224,7 @@ public class CreateTripActivity extends Activity {
 
     // This method is used to post command and data to server, and receive
     public String POST(String url) {
-        InputStream inputStream;
+        InputStream inputStream = null;
         String result = "";
         String json;
         try {
@@ -313,9 +313,10 @@ public class CreateTripActivity extends Activity {
                             "Data received correctly!", Toast.LENGTH_SHORT)
                             .show();
                     tripID = json.getLong("trip_id");
-                    Trip tmpTrip = createTrip();
-                    tmpTrip.setTripID(tripID);
-                    saveTrip(tmpTrip);
+                    Log.e(TAG+"_id= ", String.valueOf(tripID));
+                    trip = createTrip();
+                    trip.setTripID(tripID);
+                    saveTrip(trip);
                 }
             } catch (JSONException e) {
                 // TODO Auto-generated catch block

@@ -14,6 +14,7 @@ import android.os.Messenger;
 import android.os.RemoteException;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
@@ -83,7 +84,6 @@ public class MainActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-//        Log.v(TAG,"index"+1);
         Button create_trip = (Button) findViewById(R.id.create_trip);
         Button view_trip = (Button) findViewById(R.id.view);
         Button view_history = (Button) findViewById(R.id.trip_history);
@@ -104,6 +104,8 @@ public class MainActivity extends Activity {
                 startTripHistoryActivity();
             }
         });
+
+        startService(new Intent(MainActivity.this, GPS_Location.class));
         onRefresh();
         setCurrentTripInfo(getIntent());
         CheckIfServiceIsRunning();
@@ -115,9 +117,9 @@ public class MainActivity extends Activity {
 	 * a Trip.
 	 */
 	public void startCreateTripActivity() {
-            Intent intent = new Intent(this, CreateTripActivity.class);
-            startActivity(intent);
-        }
+        Intent intent = new Intent(this, CreateTripActivity.class);
+        startActivity(intent);
+    }
 
 	/**
 	 * This method should start the
@@ -125,9 +127,8 @@ public class MainActivity extends Activity {
 	 * a Trip.
 	 */
 	public void startViewTripActivity() {
-            Intent intent = new Intent(this, ViewTripActivity.class);
-//            intent.putExtra("create trip",trip);
-            startActivity(intent);
+        Intent intent = new Intent(this, ViewTripActivity.class);
+        startActivity(intent);
     }
 
     public void startTripHistoryActivity() {
@@ -158,22 +159,21 @@ public class MainActivity extends Activity {
 
     private String parseTripStatus(String result) {
         JSONObject jsonobject;
-        String convertres = "";
+        String convert = "";
         try {
             jsonobject = new JSONObject(result);
             JSONArray distance_left = jsonobject.getJSONArray("distance_left");
             JSONArray time_left = jsonobject.getJSONArray("time_left");
             JSONArray people = jsonobject.getJSONArray("people");
             for (int i = 0; i < people.length(); i++) {
-                convertres += people.getString(i) + " :\tdistance_left\t"
+                convert += people.getString(i) + " :\tdistance_left\t"
                         + distance_left.getDouble(i) + "\ttime_left\t"
                         + time_left.getInt(i) + "\n";
             }
         } catch (JSONException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
-        return convertres;
+        return convert;
     }
 
     private void setCurrentTripInfo(Intent i) {
@@ -191,8 +191,15 @@ public class MainActivity extends Activity {
 
             listView = (ListView) findViewById(R.id.AllFriends);
             allFriends = trip.ConvertFriendsToList(trip.getFriends());
+
             final ArrayAdapter<String> Friends = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,allFriends);
             listView.setAdapter(Friends);
+
+            // Set list height.
+            ViewGroup.LayoutParams params = listView.getLayoutParams();
+            params.height = allFriends.size()*200;
+            listView.setLayoutParams(params);
+            listView.requestLayout();
 
             Update.setVisibility(View.VISIBLE);
             Arrival.setVisibility(View.VISIBLE);
@@ -201,6 +208,7 @@ public class MainActivity extends Activity {
     }
 
     private void onRefresh() {
+
         // show location button click event
         Update.setOnClickListener(new View.OnClickListener() {
 
@@ -222,12 +230,12 @@ public class MainActivity extends Activity {
         });
     }
 
-    private void CheckIfServiceIsRunning() {
-        // If the service is running when the activity starts, we want to
-        // automatically bind to it.
-        if (GPS_Location.Start) {
+    private boolean CheckIfServiceIsRunning() {
+        // If the service is running when the activity starts, we want to automatically bind to it.
+        if (GPS_Location.isRunning()) {
             doBindService();
-        }
+            return true;
+        } else return false;
     }
     void doBindService() {
         // Establish a connection with the service. We use an explicit
@@ -242,19 +250,20 @@ public class MainActivity extends Activity {
     }
     /******** Communicate with service ************/
     private ServiceConnection mConnection = new ServiceConnection() {
+        @Override
         public void onServiceConnected(ComponentName className, IBinder service) {
             mService = new Messenger(service);
-            try {
+
                 Message msg = Message.obtain(null,
                         GPS_Location.MSG_REGISTER_CLIENT);
                 msg.replyTo = mMessenger;
+            try {
                 Bundle b = new Bundle();
                 b.putLong("trip_id", trip.getTripID());
                 msg.setData(b);
                 mService.send(msg);
             } catch (RemoteException e) {
-                // In this case the service has crashed before we could even do
-                // anything with it
+                // In this case the service has crashed before we could even do anything with it
             }
         }
 
@@ -268,17 +277,14 @@ public class MainActivity extends Activity {
 
     void doUnbindService() {
         if (isBound) {
-            // If we registered with the service, then now is the time to
-            // unregister.
+            // If we registered with the service, then now is the time to unregister.
             if (mService != null) {
                 try {
-                    Message msg = Message.obtain(null,
-                            GPS_Location.MSG_UNREGISTER_CLIENT);
+                    Message msg = Message.obtain(null, GPS_Location.MSG_UNREGISTER_CLIENT);
                     msg.replyTo = mMessenger;
                     mService.send(msg);
                 } catch (RemoteException e) {
-                    // There is nothing special we need to do if the service has
-                    // crashed.
+                    // There is nothing special we need to do if the service has crashed.
                 }
             }
             // Detach our existing connection.

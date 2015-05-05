@@ -56,29 +56,15 @@
             android:label="@string/view"
             android:parentActivityName=".controllers.MainActivity" >
         </activity>
-        <!--<activity-->
-            <!--android:name=".ViewTripActivity"-->
-            <!--android:label="@string/title_activity_view_trip"-->
-            <!--android:parentActivityName=".controllers.MainActivity" >-->
-            <!--<meta-data-->
-                <!--android:name="android.support.PARENT_ACTIVITY"-->
-                <!--android:value="com.nyu.cs9033.eta.controllers.MainActivity" />-->
-        <!--</activity>-->
-        <!--<activity-->
-            <!--android:name=".createTrip"-->
-            <!--android:label="@string/title_activity_create_trip"-->
-            <!--android:parentActivityName=".controllers.MainActivity" >-->
-            <!--<meta-data-->
-                <!--android:name="android.support.PARENT_ACTIVITY"-->
-                <!--android:value="com.nyu.cs9033.eta.controllers.MainActivity" />-->
-        <!--</activity>-->
-        <activity android:name=".controllers.TripHistoryActivity"
-                  android:label="Check the history"
-                  android:parentActivityName=".controllers.MainActivity"/>
+        <activity
+            android:name=".controllers.TripHistoryActivity"
+            android:label="Check the history"
+            android:parentActivityName=".controllers.MainActivity"/>
         <service
             android:name=".controllers.GPS_Location"
             android:enabled="true"
-            android:label="My GPS_Location" >
+            android:label="My GPS_Location"
+            android:process=":trip_background" >
         </service>
     </application>
 

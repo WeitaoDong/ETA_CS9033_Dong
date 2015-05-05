@@ -86,8 +86,8 @@ public class Trip implements Parcelable {
 	public Trip(Parcel p) {
         tripID = p.readLong();
         name = p.readString();
+        friends = ConvertFriendsToList(p.readString());
         destination = p.readString();
-        friends = (ArrayList<Person>)p.readSerializable();
         time = p.readString();
 //        time = (Date)p.readSerializable();
 		// TODO - fill in here
@@ -125,8 +125,8 @@ public class Trip implements Parcelable {
 	@Override
 	public void writeToParcel(Parcel dest, int flags) {
         dest.writeLong(this.tripID);
-		dest.writeString(this.name);
-        dest.writeSerializable(this.friends);
+        dest.writeString(this.name);
+        dest.writeString(this.ConvertFriendsToString(friends));
         dest.writeString(this.destination);
         dest.writeString(this.time);
 //        dest.writeSerializable(this.time);
