@@ -131,7 +131,7 @@ public class ViewTripActivity extends Activity {
                             }).show();
         }
 	}
-
+    // click the current button to send trip to MainActivity
     public void startMainCurrentTrip() {
         final Button setCurrentTrip = (Button) findViewById(R.id.CurrentTrip);
         setCurrentTrip.setOnClickListener(new View.OnClickListener() {

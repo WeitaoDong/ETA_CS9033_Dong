@@ -211,8 +211,7 @@ public class TestLocationService extends Service implements LocationListener {
         }
     }
 
-    class IncomingHandler extends Handler { // Handler of incoming messages from
-        // clients.
+    class IncomingHandler extends Handler { // Handler of incoming messages from clients.
         @Override
         public void handleMessage(Message msg) {
             switch (msg.what) {

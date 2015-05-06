@@ -79,18 +79,10 @@ public class CreateTripActivity extends Activity {
         locationList = new ArrayList<String>();
         phoneNumbers = new ArrayList<String>();
 
-//        Button CreateTrip = (Button) findViewById(R.id.create);
         Button CancelTrip = (Button) findViewById(R.id.cancel);
         Button AddFriends = (Button) findViewById(R.id.plusFriends);
         Button CheckPlace = (Button) findViewById(R.id.checkPlace);
         Button SearchPlace = (Button) findViewById(R.id.Search);
-//        CreateTrip.setOnClickListener(new View.OnClickListener(){
-//            public void onClick(View view){
-//                trip = new Trip();
-//                trip = createTrip();
-//                saveTrip(trip);
-//            }
-//        });
         CancelTrip.setOnClickListener(new View.OnClickListener(){
             public void onClick(View view){
                 cancelTrip();
@@ -325,7 +317,6 @@ public class CreateTripActivity extends Activity {
                             "Data received correctly!", Toast.LENGTH_SHORT)
                             .show();
                     tripID = json.getLong("trip_id");
-//                    Log.e(TAG+"_id= ", String.valueOf(tripID));
                     trip = createTrip();
                     trip.setTripID(tripID);
                     saveTrip(trip);
