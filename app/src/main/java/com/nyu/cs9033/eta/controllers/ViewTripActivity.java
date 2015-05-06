@@ -82,8 +82,10 @@ public class ViewTripActivity extends Activity {
             TextView friends = (TextView) findViewById(R.id.friends);
             String TripFriends = cursor.getString(2);
             friends.setText(TripFriends);
+            String friendsNumber = cursor.getString(3);
             trip.setFriends(TripFriends); // maybe has errors
             TextView destination = (TextView) findViewById(R.id.destination);
+            //todo
             String TripDestination = cursor.getString(3);
             destination.setText(TripDestination);
             trip.setDestination(TripDestination);

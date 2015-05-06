@@ -66,7 +66,8 @@ public class CreateTripActivity extends Activity {
     static final int REQUEST_DATA = 1;
     static final int REQUEST_LOCATION = 2;
     static final String uri_location = "location://com.example.nyu.hw3api";
-    private static ArrayList<String> namelist;
+    private static ArrayList<String> nameList;
+    private static ArrayList<String> phoneNumbers;
     private ArrayList<String> locationList;
 
 	@Override
@@ -74,8 +75,9 @@ public class CreateTripActivity extends Activity {
 		super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_trip);
         setTitle("Create trip");
-        namelist = new ArrayList<String>();
+        nameList = new ArrayList<String>();
         locationList = new ArrayList<String>();
+        phoneNumbers = new ArrayList<String>();
 
 //        Button CreateTrip = (Button) findViewById(R.id.create);
         Button CancelTrip = (Button) findViewById(R.id.cancel);
@@ -406,24 +408,43 @@ public class CreateTripActivity extends Activity {
                     trip_friend = (TextView) findViewById(R.id.friends);
                     // Get first row (will be only row in most cases)
                     cursor.moveToFirst();
+
                     String name = cursor.getString(cursor
                             .getColumnIndexOrThrow(ContactsContract.Contacts.DISPLAY_NAME));
-                    int number = cursor.getInt(cursor.getColumnIndexOrThrow(ContactsContract.Contacts.HAS_PHONE_NUMBER));
-                    if (namelist.contains(name)) {
+
+                    String contactId = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts._ID));
+                    int phoneCount = cursor.getInt(cursor.getColumnIndex(ContactsContract.Contacts.HAS_PHONE_NUMBER));
+                    String phoneNumber ="";
+                    if (phoneCount>0){
+                        Cursor phones = getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI,null,ContactsContract.CommonDataKinds.Phone.CONTACT_ID
+
+                                + " = " + contactId, null, null);
+
+                        if(phones.moveToFirst()){
+                            do{
+                                phoneNumber= phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
+
+                            }while(phones.moveToNext());
+                        }
+                    }
+//                    String number = cursor.getString(cursor.getColumnIndexOrThrow(ContactsContract.Contacts.HAS_PHONE_NUMBER));
+//                    Log.e(TAG+"num ", ""+);
+                    if (nameList.contains(name)&&phoneNumbers.contains(phoneNumber)) {
                         Toast.makeText(CreateTripActivity.this, "You have added this person",Toast.LENGTH_SHORT).show();
                         return;
                     } else {
                         //todo save the number
 
                         // Judge it whether the first one, if it is not add ", " before the name, then save it to Trip
-                        if (namelist.isEmpty()) {
+                        if (nameList.isEmpty()) {
                             trip_friend.append(name);
                         } else {
                             trip_friend.append(", "+name);
                         }
-                        namelist.add(name);
+                        nameList.add(name);
+                        phoneNumbers.add(phoneNumber);
                         trip.setFriends(name);
-                        Log.e(TAG+"NAME",trip.getFriends().toString());
+//                        Log.e(TAG+"NAME",trip.getFriends().toString());
                         cursor.close();
                         break;
                     }
